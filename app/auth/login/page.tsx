@@ -12,16 +12,6 @@ export const metadata: Metadata = {
 
 // Form fetching goes here
 const LoginPage = () => {
-  //   const [name, setName] = useState('');
-  //   const [email, setEmail] = useState('');
-  //   const [password, setPassword] = useState('');
-  //   // const router = useRouter();
-
-  // async function onSubmit(e) {
-  //   e.preventDefault();
-  //   // Logic for form submission, such as a POST request
-
-  // }
 
   return (
     <>
