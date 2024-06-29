@@ -1,8 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation'
 
 // Create an instance of axios with default settings
 const api = axios.create({
+  // baseURL: process.env.NEXT_PUBLIC_API_URL,
   baseURL: 'http://localhost:8000',
   withCredentials: true,  // Ensure cookies are sent with requests
 });
@@ -30,6 +32,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter()
 
   const validateToken = async () => {
     try {
@@ -43,6 +47,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.error('Token validation failed', error);
       setIsAuthenticated(false);
     }
+
+    // finally {
+    //   setLoading(false);
+    // }
   };
 
   useEffect(() => {
@@ -55,6 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // Redirect or update UI after successful login
           // Here the response can be properly handled
           setIsAuthenticated(true);
+          router.push('/wishlists')
         } catch (error) {
           if (axios.isAxiosError(error)) {
             // Error on the response (5xx, 4xx)
@@ -71,6 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await api.post('/api/user/token/logout/');
       setIsAuthenticated(false);
+      router.push('/')
     } catch (error) {
           if (axios.isAxiosError(error)) {
             // Error on the response (5xx, 4xx)
@@ -82,6 +92,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
   };
+
+  // if (loading) {
+  //   return <div>Loading...</div>; // Optionally, you can show a loading spinner or message
+  // }
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout }}>

@@ -1,12 +1,13 @@
+"use client";
 import Link from "next/link";
-
+import withAuthRedirect from '../../../hoc/withAuthRedirect';
 import { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "Sign Up Page | Join DropWishes and Create wishlist today",
-  description: "This is Sign Up Page for DropWishes",
-  // other metadata
-};
+// export const metadata: Metadata = {
+//   title: "Sign Up Page | Join DropWishes and Create wishlist today",
+//   description: "This is Sign Up Page for DropWishes",
+//   // other metadata
+// };
 
 const SignupPage = () => {
   return (
@@ -191,4 +192,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default withAuthRedirect(SignupPage);
