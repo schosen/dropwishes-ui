@@ -26,13 +26,17 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  signup: (name: string, email: string, password: string) => Promise<void>;
+  otpAuth: (email: string) => Promise<void>;
+  authError: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [authError, setAuthError] = useState('');
+  // const [loading, setLoading] = useState(true);
   const router = useRouter()
 
   const validateToken = async () => {
@@ -57,7 +61,46 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     validateToken();
   }, []);
 
+  const signup = async (name: string, email: string, password: string) => {
+    setAuthError('');
+    try {
+      const response = await api.post('/api/user/create/', {name, email, password})
+
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Sign-up failed', error.response, error.status);
+        setAuthError('Sign Up failed, please try again');
+      } else {
+          // Error on the request (Network error)
+          console.error('An error occurred:', error);
+          setAuthError('An error occurred. Please try again.');
+        }
+
+    }
+
+  }
+
+    const otpAuth = async (email: string) => {
+    setAuthError('');
+    try {
+      const response = await api.post('/api/user/otp-auth/email/', {email})
+      router.push('/auth/passcode')
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('action failed', error.response, error.status);
+        setAuthError('action failed, please try again');
+      } else {
+          // Error on the request (Network error)
+          console.error('An error occurred:', error);
+          setAuthError('An error occurred. Please try again.');
+        }
+
+    }
+
+  }
+
   const login = async (email: string, password: string) => {
+    setAuthError('');
     try {
       const response = await auth({ email, password });
           // Redirect or update UI after successful login
@@ -67,11 +110,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         } catch (error) {
           if (axios.isAxiosError(error)) {
             // Error on the response (5xx, 4xx)
-            console.log(error.status);
+            // TODO: Change this to 401 error if condition?
             console.error('Sign-up failed', error.response, error.status);
+            setAuthError('Email or Password is incorrect');
         } else {
             // Error on the request (Network error)
             console.error('An error occurred:', error);
+            setAuthError('An error occurred. Please try again.');
         }
       }
   };
@@ -98,7 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, signup, otpAuth, authError}}>
       {children}
     </AuthContext.Provider>
   );
