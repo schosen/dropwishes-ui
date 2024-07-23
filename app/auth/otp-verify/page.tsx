@@ -1,20 +1,45 @@
 "use client";
-import withAuthRedirect from '../../../hoc/withAuthRedirect';
+import withAuthRedirect from '../../../hoc/withAuthRedirect'
 import { useAuth } from '../../../context/AuthContext';
-import { FormEvent, useState } from 'react';
+import React, { useState, useRef, ButtonHTMLAttributes } from "react";
+import { useRouter } from 'next/navigation';
 
-const ForgotPasswordPage = () => {
+
+const PasscodePage = () => {
   const [email, setEmail] = useState('');
-  const { forgotPassword, authError } = useAuth();
+  const [token, setToken] = useState('');
+  const { otpVerify, otpEmail, authError } = useAuth();
+  const router = useRouter();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await forgotPassword(email);
+    await otpVerify(email, token);
   }
 
+  // async function handleResend() {
+  //   // e.preventDefault();
+
+  //   if (userEmail) {
+  //     console.log("EMAIL IN OTP_VERIFY: ", userEmail)
+  //     await otpEmail(userEmail);
+  //   } else {
+  //     console.error('No email address found');
+  //   }
+
+  // }
+
+  const handleResend = async () => {
+    if ('add email here') {
+      console.log("EMAIL IN OTP_VERIFY: ", 'add email here')
+      await otpEmail('add email here');
+    } else {
+      console.error('No email address found');
+    }
+  };
+
   return (
-<>
+    <>
     <section id="contact" className="overflow-hidden py-36">
       <div className="container">
         <div className=" flex flex-wrap">
@@ -43,16 +68,17 @@ const ForgotPasswordPage = () => {
             <div className="wow fadeInUp shadow-three dark:bg-gray-dark relative z-10 rounded-sm bg-white p-8"
             data-wow-delay=".2s">
             <h3 className="mb-6 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
-            Forgot Password
+            Enter Code
             </h3>
 
             <p className="mb-11 text-center text-base font-medium text-body-color">
-              Enter your email to send reset link
+              We've sent a passcode to your email. Please enter your passcode and address
             </p>
 
 
             <form onSubmit={onSubmit}>
-              <div className="mb-4">
+
+            <div className="mb-4">
                 <input
                   type="email"
                   name="email"
@@ -64,24 +90,47 @@ const ForgotPasswordPage = () => {
                 />
               </div>
 
-              <div className="mb-6">
-                <button
-                type="submit"
-                className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
-                  Send Link
-                </button>
+              <div className="mb-4">
+                <input
+                  type="password"
+                  name="passcode"
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
+                  required
+                  placeholder="Passcode"
+                  className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                />
               </div>
-            </form >
+
+                <div className="mt-8 flex flex-col space-y-5">
+                <div>
+                    <button className="flex flex-row items-center justify-center text-center w-full border rounded-xl outline-none py-5 bg-blue-700 border-none text-white text-sm shadow-sm">
+                    Verify Account
+                    </button>
+                </div>
+
+            </div>
+            </form>
 
 
-
+            <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500 mt-4">
+                <p>Did not recieve code?</p>
+                <button className="flex flex-row items-center text-blue-600"
+                onClick={handleResend}
+                // href="http://"
+                // target="_blank"
+                // rel="noopener noreferrer"
+                >Resend</button>
+            </div>
           </div>
           </div>
         </div>
       </div>
     </section>
-</>
+
+
+    </>
   );
 };
 
-export default withAuthRedirect(ForgotPasswordPage);
+export default withAuthRedirect(PasscodePage);

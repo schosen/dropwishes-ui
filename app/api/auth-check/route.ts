@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    await axios.get('http://localhost:8000/api/user/validate-token/', {
+    await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/validate-token/`, {
     headers: {
         Authorization: `Token ${authToken}`,
     },

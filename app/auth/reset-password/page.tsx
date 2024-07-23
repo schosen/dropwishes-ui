@@ -1,12 +1,46 @@
 "use client";
-// import withAuth from '../../hoc/withAuth'
+import withAuthRedirect from '../../../hoc/withAuthRedirect';
 import { useAuth } from '../../../context/AuthContext';
-import { FormEvent, useState } from 'react';
-
+import { useSearchParams } from 'next/navigation';
+import { FormEvent, useState, useEffect } from 'react';
+import axios from 'axios';
 
 const ResetPasswordPage = () => {
+  const { authError, resetPassword } = useAuth();
   const [password, setPassword] = useState('');
-  const { isAuthenticated, signup, authError } = useAuth();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [message, setMessage] = useState<string>('');
+  const searchParams = useSearchParams();
+  const uidb64 = searchParams.get('uidb64');
+  const token = searchParams.get('token');
+
+    useEffect(() => {
+    const verifyEmail = async () => {
+      try {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/reset-password/confirm`, {
+          params: { uidb64, token }
+        });
+        setMessage('Email verified successfully');
+      } catch (error) {
+        setMessage('Invalid or expired token');
+      }
+    };
+
+    if (uidb64 && token) {
+      verifyEmail();
+    }
+  }, [uidb64, token]);
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    if (uidb64 && token) {
+      await resetPassword(password, confirmPassword, uidb64, token);
+      } else {
+        // TODO: ADD ERROR HERE
+      }
+  }
+
 
   return (
 <>
@@ -35,6 +69,8 @@ const ResetPasswordPage = () => {
 
 
 
+            {message}
+
 
             <div className="wow fadeInUp shadow-three dark:bg-gray-dark relative z-10 rounded-sm bg-white p-8"
             data-wow-delay=".2s">
@@ -47,7 +83,7 @@ const ResetPasswordPage = () => {
             </p>
 
 
-            <form >
+            <form onSubmit={onSubmit}>
               <div className="mb-4">
                 <input
                   type="password"
@@ -64,9 +100,9 @@ const ResetPasswordPage = () => {
               <div className="mb-4">
                 <input
                   type="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  name="Confirm password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                   placeholder="Confirm Password"
                   className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
@@ -82,7 +118,15 @@ const ResetPasswordPage = () => {
               </div>
             </form >
 
-
+            <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
+                <p>Did not recieve link?</p>
+                <button className="flex flex-row items-center text-blue-600"
+                // onClick={handleResend}
+                // href="http://"
+                // target="_blank"
+                // rel="noopener noreferrer"
+                >Resend</button>
+            </div>
 
           </div>
           </div>
@@ -93,4 +137,4 @@ const ResetPasswordPage = () => {
   );
 };
 
-export default ResetPasswordPage;
+export default withAuthRedirect(ResetPasswordPage);

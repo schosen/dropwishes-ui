@@ -21,7 +21,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isPasswordLogin, setIsPasswordLogin] = useState(true);
-  const { isAuthenticated, login, otpAuth, authError } = useAuth();
+  const { isAuthenticated, login, otpEmail, authError } = useAuth();
 
 
   const router = useRouter();
@@ -42,7 +42,7 @@ const LoginPage = () => {
   async function onOtpSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await otpAuth(email);
+    await otpEmail(email);
   }
 
 
@@ -57,8 +57,6 @@ const LoginPage = () => {
       <div className="container">
         <div className=" flex flex-wrap">
           <div className="w-full px-4 lg:w-[400px] md:w-[400px]">
-            {/* {authError && <div style={{ color: 'red' }}>{authError}</div>} */}
-
 
             { authError && <div id="alert-2" className="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
               <svg className="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
@@ -187,7 +185,7 @@ const LoginPage = () => {
                     </div>
                     <div>
                       <a
-                        href="#0"
+                        href="/auth/forgot-password"
                         className="text-sm font-medium text-primary hover:underline"
                       >
                         Forgot Password?
@@ -267,4 +265,3 @@ const LoginPage = () => {
 };
 
 export default withAuthRedirect(LoginPage);
-// export default LoginPage;

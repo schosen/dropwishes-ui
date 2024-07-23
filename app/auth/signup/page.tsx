@@ -12,16 +12,23 @@ import { useAuth } from '../../../context/AuthContext';
 // };
 
 const SignupPage = () => {
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { isAuthenticated, signup, authError } = useAuth();
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const { isAuthenticated, signup, otpEmail, authError } = useAuth();
   const [isPasswordSignUp, setIsPasswordSignUp] = useState(true);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    await signup(name, email, password);
+    await signup(firstName, email, password, confirmPassword);
+  }
+
+  async function onOtpSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    await otpEmail(email);
   }
 
   const handleClick = () => {
@@ -88,10 +95,10 @@ const SignupPage = () => {
                   <div className="mb-4">
 
                     <input
-                      type="name"
-                      name="name"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
+                      type="string"
+                      name="first_name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                       required
                       placeholder="Enter your Name"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
@@ -111,7 +118,7 @@ const SignupPage = () => {
                     />
                   </div>
 
-                  <div className="mb-8">
+                  <div className="mb-4">
 
                     <input
                       type="password"
@@ -120,6 +127,19 @@ const SignupPage = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       required
                       placeholder="Enter your Password"
+                      className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
+                    />
+                  </div>
+
+                  <div className="mb-8">
+
+                    <input
+                      type="password"
+                      name="confirm_password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      placeholder="Confirm your password"
                       className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
                     />
                   </div>
@@ -199,7 +219,8 @@ const SignupPage = () => {
                     </svg>
                   </span>
                   Password Sign Up
-                </button>                 <form>
+                </button>
+                <form onSubmit={onOtpSubmit}>
                   <div className="mb-4">
                     {/* <label
                       htmlFor="email"
