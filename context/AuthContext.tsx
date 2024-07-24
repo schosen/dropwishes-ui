@@ -92,14 +92,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const otpEmail = async (email: string) => {
+    const emailQueryParam = new URLSearchParams({ email }).toString();
     setAuthError('');
     try {
       const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/otp-auth/email/`, {email})
       // if pathname includes sign up then 'auth/otp-verify' else 'auth/otp'
       if (pathname.includes('signup')) {
-        router.push('/auth/verify')
+        router.push(`/auth/otp-verify?${emailQueryParam}`);
       } else {
-        router.push('/auth/otp')
+        router.push(`/auth/otp?${emailQueryParam}`);
       }
 
     } catch (error) {

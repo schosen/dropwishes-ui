@@ -2,14 +2,22 @@
 import withAuthRedirect from '../../../hoc/withAuthRedirect'
 import { useAuth } from '../../../context/AuthContext';
 import React, { useState, useRef, ButtonHTMLAttributes } from "react";
-import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 
 
 const PasscodePage = () => {
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
   const { otpVerify, otpEmail, authError } = useAuth();
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const emailParam = searchParams.get('email')
+
+
+  React.useEffect(() => {
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, [emailParam]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -17,26 +25,11 @@ const PasscodePage = () => {
     await otpVerify(email, token);
   }
 
-  // async function handleResend() {
-  //   // e.preventDefault();
-
-  //   if (userEmail) {
-  //     console.log("EMAIL IN OTP_VERIFY: ", userEmail)
-  //     await otpEmail(userEmail);
-  //   } else {
-  //     console.error('No email address found');
-  //   }
-
-  // }
-
   const handleResend = async () => {
-    if ('add email here') {
-      console.log("EMAIL IN OTP_VERIFY: ", 'add email here')
-      await otpEmail('add email here');
-    } else {
-      console.error('No email address found');
-    }
+    await otpEmail(email);
+
   };
+
 
   return (
     <>
@@ -83,7 +76,7 @@ const PasscodePage = () => {
                   type="email"
                   name="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  // onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Enter your Email"
                   className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"

@@ -1,14 +1,22 @@
 "use client";
 import withAuthRedirect from '../../../hoc/withAuthRedirect'
 import { useAuth } from '../../../context/AuthContext';
-import React, { useState, useRef } from "react";
-
+import React, { useState, useRef, ButtonHTMLAttributes } from "react";
+import { useSearchParams} from 'next/navigation';
 
 const PasscodePage = () => {
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
-  const { isAuthenticated, otpAuth, otpEmail, authError } = useAuth();
+  const { otpAuth, otpEmail, authError } = useAuth();
+  const searchParams = useSearchParams()
+  const emailParam = searchParams.get('email')
 
+
+  React.useEffect(() => {
+    if (emailParam) {
+      setEmail(emailParam);
+    }
+  }, [emailParam]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -16,11 +24,11 @@ const PasscodePage = () => {
     await otpAuth(email, token);
   }
 
-  async function onResendSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
 
+  const handleResend = async () => {
     await otpEmail(email);
-  }
+
+  };
 
   return (
     <>
@@ -67,7 +75,7 @@ const PasscodePage = () => {
                   type="email"
                   name="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  // onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="Enter your Email"
                   className="border-stroke dark:text-body-color-dark dark:shadow-two w-full rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 focus:border-primary dark:border-transparent dark:bg-[#2C303B] dark:focus:border-primary dark:focus:shadow-none"
@@ -98,12 +106,12 @@ const PasscodePage = () => {
             </form>
 
             <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500 mt-4">
-                <p>Did not recieve code?</p> <a
-                onClick={onResendSubmit}
+                <p>Did not recieve code?</p> <button
+                onClick={handleResend}
                 className="flex flex-row items-center text-blue-600"
                 // href="http://"
                 // target="_blank"
-                rel="noopener noreferrer">Resend</a>
+                rel="noopener noreferrer">Resend</button>
             </div>
           </div>
           </div>

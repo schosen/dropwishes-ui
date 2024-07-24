@@ -118,15 +118,6 @@ const ResetPasswordPage = () => {
               </div>
             </form >
 
-            <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
-                <p>Did not recieve link?</p>
-                <button className="flex flex-row items-center text-blue-600"
-                // onClick={handleResend}
-                // href="http://"
-                // target="_blank"
-                // rel="noopener noreferrer"
-                >Resend</button>
-            </div>
 
           </div>
           </div>
