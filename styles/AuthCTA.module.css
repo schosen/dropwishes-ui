@@ -1,0 +1,34 @@
+.sectionAuthCTA{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width:100%;
+    min-height:var(--form-min-height);
+}
+
+.articleAuthCTA{
+    text-align: center;
+}
+
+@media(max-width:768px){
+    .sectionAuthCTA{
+        padding:3rem 0;
+    }
+    .margins{
+        margin-top:1.2rem;
+    }
+}
+@media(min-width:769px){
+    .imageAuthCTA{
+        width:108px;
+        height:108px;
+    }
+    .articleAuthCTA{
+        width:580px;
+        margin-left:0.6rem;
+    }
+    .margins{
+        margin-bottom:1.2rem;
+        margin-top: 2.2rem;
+    }
+}
