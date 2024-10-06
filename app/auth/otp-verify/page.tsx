@@ -1,11 +1,13 @@
 "use client";
 import withAuthRedirect from '../../../hoc/withAuthRedirect'
+import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { useAuth } from '../../../context/AuthContext';
 import React, { useState, useRef, ButtonHTMLAttributes } from "react";
 import { useSearchParams } from 'next/navigation';
 
 
 const PasscodePage = () => {
+  useAuthRedirect('/dashboard', true);
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
   const { otpVerify, otpEmail, authError } = useAuth();
@@ -126,4 +128,4 @@ const PasscodePage = () => {
   );
 };
 
-export default withAuthRedirect(PasscodePage);
+export default PasscodePage;

@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import withAuthRedirect from '../../../hoc/withAuthRedirect';
+import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { Metadata } from "next";
 import { FormEvent, useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
@@ -12,6 +13,7 @@ import { useAuth } from '../../../context/AuthContext';
 // };
 
 const SignupPage = () => {
+  useAuthRedirect('/dashboard', true);
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -316,4 +318,4 @@ const SignupPage = () => {
   );
 };
 
-export default withAuthRedirect(SignupPage);
+export default SignupPage;

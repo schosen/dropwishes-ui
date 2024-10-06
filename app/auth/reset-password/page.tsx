@@ -1,11 +1,13 @@
 "use client";
 import withAuthRedirect from '../../../hoc/withAuthRedirect';
+import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { useAuth } from '../../../context/AuthContext';
 import { useSearchParams } from 'next/navigation';
 import { FormEvent, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ResetPasswordPage = () => {
+  useAuthRedirect('/dashboard', true);
   const { authError, resetPassword } = useAuth();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -128,4 +130,4 @@ const ResetPasswordPage = () => {
   );
 };
 
-export default withAuthRedirect(ResetPasswordPage);
+export default ResetPasswordPage;

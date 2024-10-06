@@ -1,9 +1,11 @@
 "use client";
 import withAuthRedirect from '../../../hoc/withAuthRedirect';
+import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { useAuth } from '../../../context/AuthContext';
 import { FormEvent, useState } from 'react';
 
 const ForgotPasswordPage = () => {
+  useAuthRedirect('/dashboard', true);
   const [email, setEmail] = useState('');
   const { forgotPassword, authError } = useAuth();
 
@@ -84,4 +86,4 @@ const ForgotPasswordPage = () => {
   );
 };
 
-export default withAuthRedirect(ForgotPasswordPage);
+export default ForgotPasswordPage;
