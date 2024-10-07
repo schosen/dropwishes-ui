@@ -5,7 +5,6 @@ import Step from "../components/Form/step";
 import Form from "../components/Form/form";
 import Welcome from "../components/Form/welcome";
 import { useState } from "react";
-
 const stepTitles: string[] = ["create wishlist", "add product", "sign up/ login"];
 
 // export const metadata: Metadata = {
@@ -16,7 +15,7 @@ const stepTitles: string[] = ["create wishlist", "add product", "sign up/ login"
 interface Wishlist {
   title: string;
   description: string;
-  occasion_date: string;
+  occasion_date: string | null;
   address: string;
   products: any[]; // Replace 'any' with a more specific type if known
 }
@@ -32,7 +31,7 @@ export default function Home() {
     wishlist: {
       title: "",
       description: "",
-      occasion_date: "",
+      occasion_date: null,
       address: "",
       products: [],
     },
@@ -49,11 +48,8 @@ export default function Home() {
       });
     } else if (step == 2) {
       setFormData({
-        ...formData,
-        wishlist: {
-          ...formData.wishlist,
-          products: info,
-        },
+        ...formData.wishlist,
+        products: info,
       });
     }
 

@@ -17,8 +17,8 @@ import { useRouter } from 'next/navigation';
 
 // Form fetching goes here
 const LoginPage = () => {
-  // Redirect authenticated users to the dashboard
-  useAuthRedirect('/dashboard', true);
+  // Redirect authenticated users to the wishlist
+  useAuthRedirect('/wishlists', true);
 
   const { theme } = useTheme();
   const [email, setEmail] = useState('');

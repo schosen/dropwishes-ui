@@ -1,6 +1,9 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation'
+import { getWishList, clearWishList } from '../utils/localStorage';
+import { clearSessionId } from '../utils/session';
+
 
 // Create an instance of axios with default settings
 const api = axios.create({
@@ -32,6 +35,7 @@ interface AuthContextType {
   otpVerify: (email: string, token: string) => Promise<void>;
   forgotPassword: (email: string) => Promise<void>;
   resetPassword: (password: string, conformPassword: string, uidb64: string, token: string ) => Promise<void>;
+  loading: boolean
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -39,11 +43,12 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState('');
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false); // should be set to true when I eveantually use this feature
   const router = useRouter()
   const pathname = usePathname()
 
   const validateToken = async () => {
+    // setLoading(true);  // Set loading state to true
     try {
       const response = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/validate-token/`);
       if (response.status === 200) {
@@ -71,8 +76,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAuthError('');
     try {
       const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/create/`, {first_name, email, password, confirm_password})
+
       setIsAuthenticated(true);
-      //
+
+      // save locally stored wishllist to backend
+      const localWishList = getWishList();
+        if (localWishList.length > 0) {
+
+          try {
+
+            const mergeResponse = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/merge-wishlist/`,
+            { wishList: localWishList }
+            );
+
+            if (mergeResponse.status !== 200) {
+              // Handle case where wishlist merge failed
+              setAuthError('Failed to merge wishlist with server.');
+            }
+
+          } catch (mergeErr) {
+            // Catch any Axios error (e.g., network issues)
+            setAuthError('Error merging wishlist with server.');
+          }
+        }
+
+          // Clear local wishlist and session regardless of merge result
+          clearWishList();  // Clear localStorage after merging
+          clearSessionId(); // Clear session ID cookie
+
+
+      // Navigate to wishlist whether or not the merge was successful
       router.push('/wishlists')
 
     } catch (error) {
@@ -171,7 +204,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           // Here the response can be properly handled
           setIsAuthenticated(true);
 
+          // save locally stored wishllist to backend
+          const localWishList = getWishList();
+          if (localWishList.length > 0) {
+
+            try {
+              const mergeResponse = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/merge-wishlist/`,
+              { wishList: localWishList });
+
+              if (mergeResponse.status !== 200) {
+                // Handle case where wishlist merge failed
+                setAuthError('Failed to merge wishlist with server.');
+              }
+
+            } catch (mergeErr) {
+            // Catch any Axios error (e.g., network issues)
+            setAuthError('Error merging wishlist with server.');
+            }
+
+
+          }
+
+          clearWishList();  // Clear localStorage after merging
+          clearSessionId(); // Clear session ID cookie
+
           router.push('/wishlists')
+
         } catch (error) {
           if (axios.isAxiosError(error)) {
             // Error on the response (5xx, 4xx)
@@ -249,7 +307,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, signup, otpEmail, otpVerify, otpAuth, forgotPassword, resetPassword, authError}}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, signup, otpEmail, otpVerify, otpAuth, forgotPassword, resetPassword, authError, loading}}>
       {children}
     </AuthContext.Provider>
   );

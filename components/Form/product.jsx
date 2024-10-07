@@ -13,7 +13,7 @@ export default function Product({
 	setValidForm
 }) {
 	const [isProductSelected, setIsProductSelected] = useState(false)
-	const [product, setProduct] = useState({name: "", link: "", priority: "", price: "", image: null , notes: ""});
+	const [product, setProduct] = useState({name: "", link: null, priority: "", price: "", image: null , notes: ""});
 	const [errMessage, setErrMessage] = useState("")
 
 
@@ -106,8 +106,8 @@ export default function Product({
 		product.name == "" ? hasValidName = undefined : hasValidName = true;
 		product.price == "" ? hasValidPrice = undefined : hasValidPrice = true;
 
-		if (product.link == undefined || product.link == "")  {
-			hasValidLink = false
+		if (product.link == undefined || product.link == null)  {
+			hasValidLink = true
 		} else {
 			hasValidLink = linkRegex.test(product.link);
 		}
@@ -116,7 +116,7 @@ export default function Product({
 		if (hasValidName == true && hasValidPrice == true && hasValidLink == true) {
 
 			setProducts([...products, product]);
-			setProduct({name: "", link: "", priority: "", price: "", image: null, notes: ""});
+			setProduct({name: "", link: null, priority: "", price: "", image: null, notes: ""});
 			setIsProductSelected(false);
 		}
   	};

@@ -7,7 +7,7 @@ import { FormEvent, useState, useEffect } from 'react';
 import axios from 'axios';
 
 const ResetPasswordPage = () => {
-  useAuthRedirect('/dashboard', true);
+  useAuthRedirect('/wishlists', true);
   const { authError, resetPassword } = useAuth();
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');

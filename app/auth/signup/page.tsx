@@ -13,7 +13,7 @@ import { useAuth } from '../../../context/AuthContext';
 // };
 
 const SignupPage = () => {
-  useAuthRedirect('/dashboard', true);
+  useAuthRedirect('/wishlists', true);
   const [firstName, setFirstName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

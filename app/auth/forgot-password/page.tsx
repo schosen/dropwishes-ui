@@ -5,7 +5,7 @@ import { useAuth } from '../../../context/AuthContext';
 import { FormEvent, useState } from 'react';
 
 const ForgotPasswordPage = () => {
-  useAuthRedirect('/dashboard', true);
+  useAuthRedirect('/wishlists', true);
   const [email, setEmail] = useState('');
   const { forgotPassword, authError } = useAuth();
 

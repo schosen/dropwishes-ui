@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 
 
 const PasscodePage = () => {
-  useAuthRedirect('/dashboard', true);
+  useAuthRedirect('/wishlists', true);
   const [email, setEmail] = useState('');
   const [token, setToken] = useState('');
   const { otpVerify, otpEmail, authError } = useAuth();
