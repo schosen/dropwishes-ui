@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 // import Login from "@/components/Auth/Login";
 import withAuthRedirect from '../../../hoc/withAuthRedirect';
+import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { useTheme } from "next-themes";
 import { FormEvent, useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
@@ -16,6 +17,8 @@ import { useRouter } from 'next/navigation';
 
 // Form fetching goes here
 const LoginPage = () => {
+  // Redirect authenticated users to the wishlist
+  useAuthRedirect('/wishlists', true);
 
   const { theme } = useTheme();
   const [email, setEmail] = useState('');
@@ -264,4 +267,4 @@ const LoginPage = () => {
   );
 };
 
-export default withAuthRedirect(LoginPage);
+export default LoginPage;

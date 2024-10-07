@@ -10,6 +10,7 @@ export const getSessionId = () => {
     Cookies.set(SESSION_ID_COOKIE, sessionId, {
       secure: true,
       sameSite: "Strict",
+    //   expires: 7,
     });
   }
   return sessionId;

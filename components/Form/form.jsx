@@ -38,7 +38,7 @@ export default function Form({
 
 		}
 
-		if (step != 1) {
+		if (step != 1 && step != 3) {
 			setStep((s) => s + 1);
 		}
 	}

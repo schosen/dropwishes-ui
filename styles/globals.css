@@ -63,7 +63,7 @@ body{
     width:100%;
     /* background-color: var(--magnolia); */
     color: rgb(var(--foreground-rgb));
-    align-items: start;
+    /* align-items: start; */
 }
 
 main{
