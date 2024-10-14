@@ -12,7 +12,7 @@ interface Wishlist {
 // Utility function to get the auth token from cookies and redirect if not found
 const getAuthToken = () => {
   const cookieStore = cookies();
-  return cookieStore.get('authToken')?.value || null; // Return null if no token found
+  return cookieStore.get('auth_token')?.value || null; // Return null if no token found
 };
 
 
