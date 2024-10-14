@@ -17,7 +17,7 @@ export default function Product({
 	const [errMessage, setErrMessage] = useState("")
 
 
-    const priorityOptions = ["high", "medium", "low"];
+    const priorityOptions = ["HIGH", "MEDIUM", "LOW"];
 
 	function handleProductNameChange(e) {
 		setProduct({

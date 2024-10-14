@@ -1,5 +1,6 @@
 "use client";
 import { Metadata } from "next";
+import useAuthRedirect from '../hooks/useAuthRedirect';
 import Head from "next/head";
 import Step from "../components/Form/step";
 import Form from "../components/Form/form";
@@ -25,6 +26,7 @@ interface FormData {
 }
 
 export default function Home() {
+  useAuthRedirect('/wishlists', true);
 
   const [showForm, setShowForm] = useState<boolean>(true);
 	const [formData, setFormData] = useState<FormData>({
