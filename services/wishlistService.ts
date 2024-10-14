@@ -1,8 +1,6 @@
 // import axios from 'axios';
 import axiosInstance from '../utils/axios';  // Use the configured axios instance
-import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers'; // To get cookies in server components
-
 interface Wishlist {
   id: number;
   title: string;
@@ -14,21 +12,17 @@ interface Wishlist {
 // Utility function to get the auth token from cookies and redirect if not found
 const getAuthToken = () => {
   const cookieStore = cookies();
-  const token = cookieStore.get('auth_token')?.value;
-
-  if (!token) {
-    // Redirect to login page if no token is found
-    redirect('/auth/login'); // You can adjust the path to your login page
-  }
-
-  return token;
+  return cookieStore.get('authToken')?.value || null; // Return null if no token found
 };
-
 
 
 // GET all wishlists
 export async function getWishlists(): Promise<Wishlist[] | null> {
   const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No authentication token found');
+  }
 
   try {
     const response = await axiosInstance.get<Wishlist[]>(`/api/wishlist/wishlists/`, {
