@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { Metadata } from "next";
 // import Login from "@/components/Auth/Login";
-import withAuthRedirect from '../../../hoc/withAuthRedirect';
 import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { useTheme } from "next-themes";
 import { FormEvent, useState } from 'react';
@@ -26,15 +25,7 @@ const LoginPage = () => {
   const [isPasswordLogin, setIsPasswordLogin] = useState(true);
   const { isAuthenticated, login, otpEmail, authError } = useAuth();
 
-
   const router = useRouter();
-
-  // another way to redirect auth users away from login
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     router.push('/');
-  //   }
-  // }, [isAuthenticated, router]);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();

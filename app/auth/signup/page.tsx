@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import withAuthRedirect from '../../../hoc/withAuthRedirect';
 import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { Metadata } from "next";
 import { FormEvent, useState } from 'react';

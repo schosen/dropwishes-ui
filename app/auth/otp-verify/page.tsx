@@ -1,5 +1,4 @@
 "use client";
-import withAuthRedirect from '../../../hoc/withAuthRedirect'
 import useAuthRedirect from '../../../hooks/useAuthRedirect';
 import { useAuth } from '../../../context/AuthContext';
 import React, { useState, useRef, ButtonHTMLAttributes } from "react";

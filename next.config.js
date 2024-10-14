@@ -2,6 +2,7 @@
 
 // export default nextConfig;
 module.exports = {
+  // use for production
   // async rewrites() {
   //   return [
   //     {
@@ -10,8 +11,14 @@ module.exports = {
   //     },
   //   ];
   // },
-  env: {
-  NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-  },
+
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/:path*",
+  //       destination: "http://localhost:8000/:path*", // Proxy to Django backend
+  //     },
+  //   ];
+  // },
   output: "standalone", //This will create a folder at .next/standalone which can then be deployed on its own without installing node_modules
 };

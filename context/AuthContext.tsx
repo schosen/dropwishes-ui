@@ -3,24 +3,18 @@ import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation'
 import { getWishList, clearWishList } from '../utils/localStorage';
 import { clearSessionId } from '../utils/session';
-
-
-// Create an instance of axios with default settings
-const api = axios.create({
-  // baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
-  withCredentials: true,  // Ensure cookies are sent with requests
-});
+import axiosInstance from '../utils/axios';  // Use the configured axios instance
 
 // Function to handle auth
 export const auth = async (credentials: { email: string; password: string }) => {
-  const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/token/`, credentials, {
+  const response = await axiosInstance.post(`/api/user/token/`, credentials, {
     headers: {
         'Content-Type': 'application/json',
     },
   });
   const { csrfToken } = response.data;
 
-  api.defaults.headers.common['X-CSRFToken'] = csrfToken;  // Set CSRF token for subsequent requests
+  axiosInstance.defaults.headers.common['X-CSRFToken'] = csrfToken;  // Set CSRF token for subsequent requests
   return response;
 };
 
@@ -50,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const validateToken = async () => {
     // setLoading(true);  // Set loading state to true
     try {
-      const response = await api.get(`${process.env.NEXT_PUBLIC_API_URL}/api/user/validate-token/`);
+      const response = await axiosInstance.get(`/api/user/validate-token/`);
       if (response.status === 200) {
         setIsAuthenticated(true);
       } else {
@@ -75,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const signup = async (first_name: string, email: string, password: string, confirm_password: string) => {
     setAuthError('');
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/create/`, {first_name, email, password, confirm_password})
+      const response = await axiosInstance.post(`/api/user/create/`, {first_name, email, password, confirm_password})
 
       setIsAuthenticated(true);
 
@@ -85,7 +79,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
           try {
 
-            const mergeResponse = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/merge-wishlist/`,
+            const mergeResponse = await axiosInstance.post(`/api/wishlist/merge-wishlist/`,
             { wishList: localWishList }
             );
 
@@ -128,7 +122,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const emailQueryParam = new URLSearchParams({ email }).toString();
     setAuthError('');
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/otp-auth/email/`, {email})
+      const response = await axiosInstance.post(`/api/user/otp-auth/email/`, {email})
       // if pathname includes sign up then 'auth/otp-verify' else 'auth/otp'
       if (pathname.includes('signup')) {
         router.push(`/auth/otp-verify?${emailQueryParam}`);
@@ -153,7 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const otpVerify = async (email: string, token: string) => {
     setAuthError('');
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/otp-auth/verify/`, {email, token})
+      const response = await axiosInstance.post(`/api/user/otp-auth/verify/`, {email, token})
       setIsAuthenticated(true);
 
       router.push('/wishlists')
@@ -177,7 +171,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const otpAuth = async (email: string, token: string) => {
     setAuthError('');
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/otp-auth/token/`, {email, token})
+      const response = await axiosInstance.post(`/api/user/otp-auth/token/`, {email, token})
       setIsAuthenticated(true);
 
       router.push('/wishlists')
@@ -209,7 +203,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (localWishList.length > 0) {
 
             try {
-              const mergeResponse = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/merge-wishlist/`,
+              const mergeResponse = await axiosInstance.post(`/api/wishlist/merge-wishlist/`,
               { wishList: localWishList });
 
               if (mergeResponse.status !== 200) {
@@ -246,7 +240,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = async () => {
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/token/logout/`);
+      const response = await axiosInstance.post(`/api/user/token/logout/`);
       setIsAuthenticated(false);
 
       router.push('/')
@@ -264,7 +258,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const forgotPassword = async (email: string) => {
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/reset-password/`, {email});
+      const response = await axiosInstance.post(`/api/user/reset-password/`, {email});
       setIsAuthenticated(false);
       //TODO: add message saying reset link sent to email.
 
@@ -284,7 +278,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const resetPassword = async (password: string, confirm_password: string,  uidb64: string, token: string ) => {
     const queryParams = new URLSearchParams({ uidb64, token }).toString();
     try {
-      const response = await api.post(`${process.env.NEXT_PUBLIC_API_URL}/api/user/reset-password/confirm?${queryParams}`, {password, confirm_password});
+      const response = await axiosInstance.post(`/api/user/reset-password/confirm?${queryParams}`, {password, confirm_password});
       setIsAuthenticated(false);
       setAuthError('Password Reset successfully');
 
