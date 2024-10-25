@@ -94,9 +94,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         }
 
-          // Clear local wishlist and session regardless of merge result
-          clearWishList();  // Clear localStorage after merging
-          clearSessionId(); // Clear session ID cookie
+        // Clear local wishlist and session regardless of merge result
+        clearWishList();  // Clear localStorage after merging
+        clearSessionId(); // Clear session ID cookie
 
 
       // Navigate to wishlist whether or not the merge was successful

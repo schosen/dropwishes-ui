@@ -6,6 +6,7 @@ import Step from "../components/Form/step";
 import Form from "../components/Form/form";
 import Welcome from "../components/Form/welcome";
 import { useState } from "react";
+
 const stepTitles: string[] = ["create wishlist", "add product", "sign up/ login"];
 
 // export const metadata: Metadata = {
