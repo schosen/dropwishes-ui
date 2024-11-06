@@ -349,7 +349,7 @@ export default function AnonProduct({
                                         {/* product details */}
                                         <div className="flex flex-col gap-4 ">
                                             <div>
-                                                <h3 className="text-base font-bold text-gray-800">{p.id}{" "}{p.name}</h3>
+                                                <h3 className="text-base font-bold text-gray-800">{p.name}</h3>
                                                 <a href={p.link} target="_blank" className="text-xs text-gray-500 mt-2 flex items-center gap-2 break-all">{p.link}</a>
                                             </div>
                                         </div>
