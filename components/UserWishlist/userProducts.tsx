@@ -1,51 +1,60 @@
+"use client"
 import utilStyles from "../../styles/utils.module.css";
 import productStyles from "../../styles/Product.module.css";
-import { useState } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { linkRegex } from "../../constants/regexConstants";
 import { uploadImage } from "../../utils/imageStorage";
+import { Product } from "@/interfaces/interface";
 import Image from 'next/image'
+import axiosInstance from "@/utils/axios";
 
 
-export default function Product({
-	products,
-	setProducts,
-	validForm,
-	setValidForm
-}) {
+export default function AnonProduct({
+	WishlistProducts,
+	uuid
+
+}: {WishlistProducts: Product[], setProducts: Product[], uuid: string}) {
+	const [validForm, setValidForm] = useState({
+		hasValidName: true,
+		hasValidPrice: true,
+		hasValidLink: true,
+	});
 	const [isProductSelected, setIsProductSelected] = useState(false)
 	const [product, setProduct] = useState({name: "", link: null, priority: "", price: "", image: null , notes: ""});
 	const [errMessage, setErrMessage] = useState("")
+  const [products, setProducts] = useState(WishlistProducts)
 
+  const priorityOptions = ["HIGH", "MEDIUM", "LOW"];
 
-    const priorityOptions = ["HIGH", "MEDIUM", "LOW"];
-
-	function handleProductNameChange(e) {
+	function handleProductNameChange(e: ChangeEvent<HTMLInputElement>) {
 		setProduct({
 			...product,
 			name: e.target.value,
 		});
 	}
 
-    function handleLinkChange(e) {
+  function handleLinkChange(e: ChangeEvent<HTMLInputElement>) {
 		setProduct({
 			...product,
 			link: e.target.value,
 		});
 	}
 
-	function handlePriceChange(e) {
+	function handlePriceChange(e: ChangeEvent<HTMLInputElement>) {
 		setProduct({
 			...product,
 			price: e.target.value,
 		});
 	}
-	function handlePriorityChange(e) {
+
+	function handlePriorityChange(e: ChangeEvent<HTMLInputElement>) {
 		setProduct({
 			...product,
 			priority: e.target.value,
 		});
 	}
-	const handleImageUpload = (event) => {
+
+	const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
 		const file = event.target.files[0];
 		if (file) {
 		uploadImage(
@@ -65,25 +74,15 @@ export default function Product({
 		}
 	};
 
-    function handleNotesChange(e) {
+  function handleNotesChange(e: ChangeEvent<HTMLInputElement>) {
 		setProduct({
 			...product,
 			notes: e.target.value,
 		});
 	}
 
-	function getError(validator) {
-		if (!validator)
-			return (
-				<span className={utilStyles.error}>
-					{validator === undefined
-						? "This field is required"
-						: "Invalid format"}
-				</span>
-			);
-	}
 
-	function getImageError(validator, message) {
+	function getImageError(validator: boolean, message: string) {
 		if (!validator)
 			return (
 				<span className={utilStyles.error}>
@@ -96,6 +95,17 @@ export default function Product({
 		setIsProductSelected(!isProductSelected);
 
 	};
+
+	function getError(validator: boolean) {
+		if (!validator)
+			return (
+				<span className={utilStyles.error}>
+					{validator === undefined
+						? "This field is required"
+						: "Invalid format"}
+				</span>
+			);
+	}
 
 	const handleAddProduct = () => {
 
@@ -114,25 +124,61 @@ export default function Product({
 
 		setValidForm({...validForm, hasValidName, hasValidPrice, hasValidLink})
 		if (hasValidName == true && hasValidPrice == true && hasValidLink == true) {
-
-			setProducts([...products, product]);
-			setProduct({name: "", link: null, priority: "", price: "", image: null, notes: ""});
-			setIsProductSelected(false);
+      return true
 		}
-  	};
+  };
+
+	async function handleAddNewProduct(e: MouseEvent<HTMLButtonElement>) {
+			// validation above
+    let formValidation = handleAddProduct()
+
+    if (formValidation) {
+      try {
+        const response = await axiosInstance.patch(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/wishlists/${uuid}/`, {
+        products: [product]
+      });
+
+        let responseProducts = response.data.products
+
+        const recentProduct = responseProducts.reduce(
+          (max, product) =>  product.id > max.id ? product : max,
+          responseProducts[0]
+        );
+
+        console.log("MAX ID PRODUCT: ", recentProduct)
+
+        setProducts([...products, recentProduct]);
+        setProduct([{name: "", link: null, priority: "", price: "", image: null, notes: ""}]);
+        setIsProductSelected(false);
+      } catch (error) {
+        console.log("error: ", error)
+      }
+
+    }
+
+	}
 
 
-	const handleRemoveProduct = (index) => {
+	async function handleRemoveProduct(id) {
 		// creates new array without the item to remove (using index to remove)
-		const updatedProducts = products.filter((_, i) => i !== index);
-		setProducts(updatedProducts);
+
+    try {
+      const response = await axiosInstance.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/products/${id}/`)
+
+      const updatedProducts = products.filter((v) => v.id !== id);
+      console.log("UPDATED PRODUCTS: ", updatedProducts)
+      setProducts(updatedProducts);
+
+    } catch (error) {
+      console.log("error: ", error)
+
+    }
+
+
 	};
 
 	return (
 		<>
-			<h1 className={`${utilStyles.title} ${utilStyles.colorText}`}>
-				Add a Product
-			</h1>
 			<fieldset className={utilStyles.noBorder}>
 				<legend className={utilStyles.description}>
 					Provide a product details
@@ -283,7 +329,7 @@ export default function Product({
 					<button
 					type='button'
 					className={`${productStyles.longButton}`}
-					onClick={handleAddProduct}> Add product </button>
+					onClick={handleAddNewProduct}> Add product </button>
 					<button className={`${productStyles.cancelButton}`}onClick={handleClick}> Cancel </button>
 				</>
 				:
@@ -303,7 +349,7 @@ export default function Product({
                                         {/* product details */}
                                         <div className="flex flex-col gap-4 ">
                                             <div>
-                                                <h3 className="text-base font-bold text-gray-800">{p.name}</h3>
+                                                <h3 className="text-base font-bold text-gray-800">{p.id}{" "}{p.name}</h3>
                                                 <a href={p.link} target="_blank" className="text-xs text-gray-500 mt-2 flex items-center gap-2 break-all">{p.link}</a>
                                             </div>
                                         </div>
@@ -314,7 +360,7 @@ export default function Product({
                                                 {/* <svg xmlns="http://www.w3.org/2000/svg" className="w-4 cursor-pointer fill-gray-400 inline-block" viewBox="0 0 64 64">
                                                     <path d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z" data-original="#000000"></path>
                                                 </svg> */}
-                                                <button type="button" onClick={() => handleRemoveProduct(index)} >
+                                                <button type="button" onClick={() => handleRemoveProduct(p.id)} >
                                                     <svg xmlns="http://www.w3.org/2000/svg" className="w-4 cursor-pointer fill-gray-400 inline-block" viewBox="0 0 24 24">
                                                         <path d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z" data-original="#f31111"></path>
 

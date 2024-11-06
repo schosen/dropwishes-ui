@@ -1,7 +1,7 @@
 import utilStyles from "../../styles/utils.module.css";
 import wishlistStyles from "../../styles/Wishlist.module.css";
 
-export default function Wishlist({
+export default function AnonWishlist({
 	wishlist,
 	setWishlist,
 	validForm,

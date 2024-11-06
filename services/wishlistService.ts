@@ -40,6 +40,28 @@ export async function getWishlists(): Promise<Wishlist[] | null> {
   }
 }
 
+
+// GET a specific wishlist
+export async function getWishlist(id: string): Promise<Wishlist[] | null> {
+  const token = getAuthToken();
+
+  if (!token) {
+    throw new Error('No authentication token found');
+  }
+
+  try {
+    const response = await axiosInstance.get<Wishlist>(`/api/wishlist/wishlists/${id}/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    return response.data; // Return the fetched wishlists data
+  } catch (error) {
+    console.error('Error fetching wishlists:', error);
+    return null;
+  }
+}
+
 // POST a new wishlist
 export async function postWishlist(newWishlistData: Wishlist[]): Promise<void> {
   const token = getAuthToken();
@@ -126,16 +148,8 @@ export async function patchWishlist(id: string, partialWishlistData: Wishlist[])
 
 export async function viewWishlists(uuid: string, wishlidIds: string): Promise<string> {
 
-  const token = getAuthToken();
-
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
    try {
-    const response = await axiosInstance.get(`/api/wishlist/wishlists/view/${uuid}/${wishlidIds}`,  {
-      headers: {
-        Authorization: `Token ${token}`,
-      }});
+    const response = await axiosInstance.get(`/api/wishlist/wishlists/view/${uuid}/${wishlidIds}`);
     return response.data
 
    } catch (error) {

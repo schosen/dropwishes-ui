@@ -3,6 +3,7 @@ import { Wishlist } from "@/interfaces/interface";
 import CopyLink from "./copyLink";
 import { useState } from 'react';
 import axiosInstance from '../../utils/axios';
+import Link from 'next/link'
 
 
 function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
@@ -84,7 +85,11 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
               }}
             />
             )}
-            <label className='text-black dark:text-white font-bold'>{wishlist.title}</label>
+            <label className='text-black dark:text-white font-bold'>
+              <Link href={`/wishlists/${wishlist.uuid}`}>
+                {wishlist.title}
+              </Link>
+            </label>
             <p className='text-black dark:text-white font-bold'>Date: {wishlist.occasion_date || 'No date available'}</p>
           </div>
         ))}

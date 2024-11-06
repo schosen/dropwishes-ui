@@ -1,7 +1,7 @@
 import formStyles from "../../styles/Form.module.css";
 import { useState } from "react";
-import Wishlist from "./wishlist";
-import Product from "./product";
+import AnonWishlist from "./anonWishlist";
+import AnonProduct from "./anonProduct";
 import AuthCTA from "./authCta";
 import { addToWishList } from '../../utils/localStorage';
 import { useRouter } from 'next/navigation'
@@ -81,7 +81,7 @@ export default function Form({
 				{console.log(step)}
 				{step == 1 && (
 
-					<Wishlist
+					<AnonWishlist
 						wishlist={wishlist}
 						setWishlist={setWishlist}
 						validForm={validForm}
@@ -89,7 +89,7 @@ export default function Form({
 
 				)}
 				{step == 2 && (
-					< Product
+					< AnonProduct
 						products={products}
 						setProducts={setProducts}
 						validForm={validForm}
