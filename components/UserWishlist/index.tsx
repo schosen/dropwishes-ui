@@ -1,5 +1,5 @@
 "use client"
-import { Wishlist } from "@/interfaces/interface";
+import { Wishlist } from "@/interfaces/wishlist";
 import CopyLink from "./copyLink";
 import { useState } from 'react';
 import axiosInstance from '../../utils/axios';

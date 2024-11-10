@@ -4,7 +4,7 @@ import productStyles from "../../styles/Product.module.css";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { linkRegex } from "../../constants/regexConstants";
 import { uploadImage } from "../../utils/imageStorage";
-import { Product } from "@/interfaces/interface";
+import { Product } from "@/interfaces/wishlist";
 import Image from 'next/image'
 import axiosInstance from "@/utils/axios";
 

@@ -1,7 +1,7 @@
 // import axios from 'axios';
 import axiosInstance from '../utils/axios';  // Use the configured axios instance
 import { cookies } from 'next/headers'; // To get cookies in server components
-import { Wishlist } from '@/interfaces/interface'
+import { Wishlist } from '@/interfaces/wishlist'
 
 
 // interface Wishlist {
