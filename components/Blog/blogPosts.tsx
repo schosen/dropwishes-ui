@@ -28,16 +28,22 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
   useEffect(() => {
     const page = parseInt(searchParams.get('page') as string) || 1;
     const category = (searchParams.get('category') as string) || null;
+    console.log("PAGE COLLECTED FROM PARAMS: ", page)
     setCurrentPage(page);
     setSelectedCategory(category);
     loadPosts(page, category);
+    console.log("CURRENT PAGE: ", currentPage)
+    console.log("CURRENT CATEGORY: ", selectedCategory)
+
   }, [searchParams.get('page'), searchParams.get('category')]);
 
   // Fetch posts when page or category changes
   const loadPosts = async (page: number, category?: string) => {
+    console.log("PAGE IN LOAD POSTS: ", page)
     const newPosts = await fetchBlogPosts(category, page, postsPerPage);
     setPosts(newPosts);
     setCurrentPage(page);
+    console.log("CURRENT PAGE SET IN LOAD POSTS: ", currentPage)
   };
 
   // Handle category change and update query params
@@ -51,7 +57,8 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
 
   // Handle page change and update query params
   const handlePageChange = async (page: number) => {
-    const query = new URLSearchParams({ category: selectedCategory, page: page}).toString();
+    let query = selectedCategory == null ? new URLSearchParams({page: page}).toString() : new URLSearchParams({ category: selectedCategory, page: page}).toString()
+
     router.push(`/blog?${query}`);
     // await loadPosts(page, selectedCategory || undefined);
   };
@@ -59,7 +66,9 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
   // Render pagination buttons
   const renderPagination = () => {
     const pageNumbers = [];
-
+    console.log("CURRENT PAGE SET IN RENDER PAG: ", currentPage)
+    //  [1,"...",3,4,(5),6,7,8]
+    // [(1), 2, 3, "...", 8]
     // First page button
     if (currentPage > 3) {
       pageNumbers.push(1);
@@ -84,6 +93,7 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
       if (currentPage < totalPages - 3) pageNumbers.push('...');
       pageNumbers.push(totalPages);
     }
+    console.log("PAGENUMBERS: ", pageNumbers)
 
     return (
       <div>
@@ -117,12 +127,14 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
       {/* Category Filter */}
       <div>
         {categories.map((category) => (
+          <li key={category._id}>
           <button
             key={category._id}
             onClick={() => handleCategoryChange(category.title)}
           >
             {category.title}
           </button>
+          </li>
         ))}
       </div>
 

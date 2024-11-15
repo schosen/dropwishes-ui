@@ -10,9 +10,9 @@ export default async function BlogPage({searchParams}: {searchParams: Promise<{ 
   const initialPosts = await fetchBlogPosts(category, parseInt(page), postsPerPage);
   const categories = await fetchCategories();
   const totalPosts = await fetchTotalPosts(category);
-  console.log("PAGE: ", page)
-  console.log("CATEGORY: ", category)
-  console.log("CATEGORIES: ", categories)
+  // console.log("PAGE: ", page)
+  // console.log("CATEGORY: ", category)
+  // console.log("CATEGORIES: ", categories)
 
   return (
     <div className='mt-48'>
@@ -25,3 +25,6 @@ export default async function BlogPage({searchParams}: {searchParams: Promise<{ 
     </div>
   )
 }
+
+export const revalidate = 60; // revalidate this page every 60 seconds
+

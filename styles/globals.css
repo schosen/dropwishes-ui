@@ -58,11 +58,11 @@ html, body{
 }
 
 body{
-    display: flex;
+    /* display: flex; */
     /* justify-content: center; */
     width:100%;
     /* background-color: var(--magnolia); */
-    color: rgb(var(--foreground-rgb));
+    /* color: rgb(var(--foreground-rgb)); */
     /* align-items: start; */
 }
 
@@ -89,7 +89,7 @@ li{
 
 @media(max-width:768px){
     body{
-        position: relative;
+        /* position: relative; */
         justify-content: center;
     }
     /* #__next{
@@ -126,7 +126,7 @@ li{
 @media(min-width:769px){
 
     body{
-        position: relative;
+        /* position: relative; */
         justify-content: left;
     }
 
