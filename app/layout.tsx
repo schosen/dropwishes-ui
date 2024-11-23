@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
-// import { Inter } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "../styles/globals.css";
+import "@/styles/scss/index.scss";
 import IndexStyles from "../styles/Index.module.css";
 // import Footer from "@/components/Footer";
 import Header from "@/components/Header";
-// import "node_modules/react-modal-video/css/modal-video.css";
-// import "../styles/index.css";
 
-// const inter = Inter({ subsets: ["latin"] });
-// ${inter.className}
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Dropwishes",
@@ -20,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`bg-[#FCFCFC] dark:bg-black` }>
+    <html lang="en" dir="" className={poppins.className}>
+      <body className="bg-white text-base dark:bg-neutral-900 text-neutral-900 dark:text-neutral-200">
         <Providers>
           <Header />
           {children}

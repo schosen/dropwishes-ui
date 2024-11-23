@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { fetchBlogPosts, urlFor} from '@/services/sanityClient';
 import { Post, Category } from "@/interfaces/blog";
+import Pagination from './pagination';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -16,109 +17,39 @@ interface BlogPageProps {
 
 export default function BlogPosts({ initialPosts, categories, totalPosts, postsPerPage}: BlogPageProps) {
   const router = useRouter();
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const currentPage = parseInt(searchParams.get('page') || '1');
+  const selectedCategory = searchParams.get('category') || '';
 
-  // Calculate the total number of pages
-  const totalPages = Math.ceil(totalPosts / postsPerPage);
-
-  // Update state based on query params
-  useEffect(() => {
-    const page = parseInt(searchParams.get('page') as string) || 1;
-    const category = (searchParams.get('category') as string) || null;
-    console.log("PAGE COLLECTED FROM PARAMS: ", page)
-    setCurrentPage(page);
-    setSelectedCategory(category);
-    loadPosts(page, category);
-    console.log("CURRENT PAGE: ", currentPage)
-    console.log("CURRENT CATEGORY: ", selectedCategory)
-
-  }, [searchParams.get('page'), searchParams.get('category')]);
-
-  // Fetch posts when page or category changes
   const loadPosts = async (page: number, category?: string) => {
-    console.log("PAGE IN LOAD POSTS: ", page)
     const newPosts = await fetchBlogPosts(category, page, postsPerPage);
     setPosts(newPosts);
-    setCurrentPage(page);
-    console.log("CURRENT PAGE SET IN LOAD POSTS: ", currentPage)
   };
 
   // Handle category change and update query params
   const handleCategoryChange = async (category: string) => {
-    setSelectedCategory(category);
-    const query = new URLSearchParams({ category: category, page: "1"}).toString();
-
-    router.push(`/blog?${query}`);
-    // await loadPosts(1, category);
+    const params = new URLSearchParams(searchParams as any);
+    params.set('category', category);
+    params.set('page', '1'); // Reset to first page
+    router.push(`?${params.toString()}`);
+    loadPosts(1, category);
   };
 
-  // Handle page change and update query params
-  const handlePageChange = async (page: number) => {
-    let query = selectedCategory == null ? new URLSearchParams({page: page}).toString() : new URLSearchParams({ category: selectedCategory, page: page}).toString()
-
-    router.push(`/blog?${query}`);
-    // await loadPosts(page, selectedCategory || undefined);
+  // handle page change and update query params
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams as any);
+    params.set('page', page.toString());
+    if (selectedCategory) params.set('category', selectedCategory);
+    router.push(`?${params.toString()}`);
+    loadPosts(page, selectedCategory);
   };
 
-  // Render pagination buttons
-  const renderPagination = () => {
-    const pageNumbers = [];
-    console.log("CURRENT PAGE SET IN RENDER PAG: ", currentPage)
-    //  [1,"...",3,4,(5),6,7,8]
-    // [(1), 2, 3, "...", 8]
-    // First page button
-    if (currentPage > 3) {
-      pageNumbers.push(1);
-      if (currentPage > 4) pageNumbers.push('...');
-    }
 
-    // Previous two pages
-    for (let i = currentPage - 2; i < currentPage; i++) {
-      if (i > 1) pageNumbers.push(i);
-    }
+  useEffect(() => {
+    loadPosts(currentPage, selectedCategory);
+  }, [currentPage, selectedCategory]);
 
-    // Current page
-    pageNumbers.push(currentPage);
-
-    // Next two pages
-    for (let i = currentPage + 1; i <= currentPage + 2; i++) {
-      if (i < totalPages) pageNumbers.push(i);
-    }
-
-    // Last page button
-    if (currentPage < totalPages - 2) {
-      if (currentPage < totalPages - 3) pageNumbers.push('...');
-      pageNumbers.push(totalPages);
-    }
-    console.log("PAGENUMBERS: ", pageNumbers)
-
-    return (
-      <div>
-        <button disabled={currentPage === 1} onClick={() => handlePageChange(currentPage - 1)}>
-          Previous
-        </button>
-        {pageNumbers.map((num, index) =>
-          num === '...' ? (
-            <span key={index}>...</span>
-          ) : (
-            <button
-              key={num}
-              disabled={num === currentPage}
-              onClick={() => handlePageChange(num as number)}
-            >
-              {num}
-            </button>
-          )
-        )}
-        <button disabled={currentPage === totalPages} onClick={() => handlePageChange(currentPage + 1)}>
-          Next
-        </button>
-      </div>
-    );
-  };
 
   return (
     <div>
@@ -126,6 +57,9 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
 
       {/* Category Filter */}
       <div>
+        <Link href="/blog" >
+          All Posts
+        </Link>
         {categories.map((category) => (
           <li key={category._id}>
           <button
@@ -141,7 +75,7 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
       {/* Blog Posts */}
       <ul>
         {posts.length > 0 && posts.map(
-          ({ _id, mainImage, title = '', slug = '', _updatedAt, excerpt = ''}) =>
+          ({ _id, mainImage, title = '', slug = '', _createdAt, excerpt = ''}) =>
           slug && (
             <li key={_id}>
               <Link href={`/blog/${encodeURIComponent(slug.current)}`}>
@@ -155,18 +89,21 @@ export default function BlogPosts({ initialPosts, categories, totalPosts, postsP
                 />
               </Link>{' '}
               <p>{excerpt}{" ...Read More"}</p>
-              ({new Date(_updatedAt).toDateString()})
+              ({new Date(_createdAt).toDateString()})
             </li>
           )
         )}
 
-
       </ul>
 
 
-
       {/* Pagination */}
-      {renderPagination()}
+      <Pagination
+        totalPosts={totalPosts}
+        postsPerPage={postsPerPage}
+        currentPage={currentPage}
+        onPageChange={handlePageChange}
+      />
 
     </div>
   );

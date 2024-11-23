@@ -22,14 +22,16 @@ const ptComponents = {
         return null
       }
       return (
+        <figure>
         <Image
-          src={urlFor(value).width(320).height(240).fit('max').auto('format').url()}
+          src={urlFor(value).maxWidth(320).maxHeight(240).url()}
           alt={value.alt || ' '}
           className="rounded-2xl object-cover"
           loading="lazy"
-          width={1260}
+          width={600}
           height={750}
         />
+        </figure>
       )
     }
   }
