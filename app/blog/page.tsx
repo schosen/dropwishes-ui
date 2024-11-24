@@ -1,6 +1,9 @@
 import {fetchBlogPosts, fetchCategories, fetchTotalPosts} from "@/services/sanityClient"
 import BlogPosts from '@/components/Blog/blogPosts';
-import { NextRequest, URLPattern } from 'next/server'
+import BgGlassmorphism from "@/components/shared/BgGlassmorphism";
+import SectionAds from "@/components/Blog/SectionAds";
+import SectionMagazine5 from "@/components/Blog/SectionMagazine5";
+import SectionLatestPosts from "@/components/Blog/SectionLatestPosts";
 
 
 export default async function BlogPage({searchParams}: {searchParams: Promise<{ [key: string]: string | string[] | undefined }>}) {
@@ -15,13 +18,28 @@ export default async function BlogPage({searchParams}: {searchParams: Promise<{ 
   // console.log("CATEGORIES: ", categories)
 
   return (
-    <div className='mt-48'>
-      <BlogPosts
-        initialPosts={initialPosts}
-        categories={categories}
-        totalPosts={totalPosts}
-        postsPerPage={postsPerPage}
-      />
+    <div className="nc-BlogPage overflow-hidden relative">
+      <BgGlassmorphism />
+      <div className="container relative">
+        <div className="pt-12 pb-16 lg:pb-28">
+          {/* Can decide what to do with the below later */}
+          {/* <SectionMagazine5 /> */}
+        </div>
+
+
+        {/* === SECTION 1 === */}
+        <SectionAds />
+
+        {/* === SECTION 8 === */}
+        <SectionLatestPosts className="py-16 lg:py-28" />
+
+        <BlogPosts
+          initialPosts={initialPosts}
+          categories={categories}
+          totalPosts={totalPosts}
+          postsPerPage={postsPerPage}
+        />
+      </div>
     </div>
   )
 }

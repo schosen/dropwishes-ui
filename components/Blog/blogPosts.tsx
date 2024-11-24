@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { fetchBlogPosts, urlFor} from '@/services/sanityClient';
 import { Post, Category } from "@/interfaces/blog";
-import Pagination from './pagination';
+import Pagination from './postPagination';
 import Link from 'next/link';
 import Image from 'next/image';
 
