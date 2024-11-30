@@ -70,7 +70,7 @@ const SignupPage = () => {
               {isPasswordSignUp ?
 
               <>
-              <button onClick={handleClick} className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
+              <button onClick={handleClick} className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-500 dark:border-transparent dark:bg-[#2C303B] dark:hover:border-blue-500 dark:hover:text-blue-500 dark:hover:shadow-none">
                   <span className="mr-3">
                     <svg
                       fill="currentColor"
@@ -196,7 +196,7 @@ const SignupPage = () => {
                   <div className="mb-6">
                     <button
                     type="submit"
-                    className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                    className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-blue-500 px-9 py-4 text-base font-medium text-white duration-300 hover:bg-blue-400">
                       Sign Up
                     </button>
                   </div>
@@ -207,7 +207,7 @@ const SignupPage = () => {
                   :
 
                   <>
-                  <button onClick={handleClick} className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-primary hover:bg-primary/5 hover:text-primary dark:border-transparent dark:bg-[#2C303B] dark:hover:border-primary dark:hover:bg-primary/5 dark:hover:text-primary dark:hover:shadow-none">
+                  <button onClick={handleClick} className="border-stroke dark:text-body-color-dark dark:shadow-two mb-6 flex w-full items-center justify-center rounded-sm border bg-[#f8f8f8] px-6 py-3 text-base text-body-color outline-none transition-all duration-300 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-500 dark:border-transparent dark:bg-[#2C303B] dark:hover:border-blue-500 dark:hover:text-blue-500 dark:hover:shadow-none">
                   <span className="mr-3">
                     <svg
                       fill="currentColor"
@@ -291,7 +291,7 @@ const SignupPage = () => {
                   <div className="mb-6">
                     <button
                     type="submit"
-                    className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-primary px-9 py-4 text-base font-medium text-white duration-300 hover:bg-primary/90">
+                    className="shadow-submit dark:shadow-submit-dark flex w-full items-center justify-center rounded-sm bg-blue-500 px-9 py-4 text-base font-medium text-white duration-300 hover:bg-blue-400">
                       Send Code
                     </button>
                   </div>
