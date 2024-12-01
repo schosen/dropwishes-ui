@@ -4,11 +4,11 @@ export type Route = NextRouter;
 
 export type PathName = Route;
 
-export interface CustomLink {
-  label: string;
-  href: Route;
-  targetBlank?: boolean;
-}
+// export interface CustomLink {
+//   label: string;
+//   href: Route;
+//   targetBlank?: boolean;
+// }
 
 export type TwMainColor =
   | "pink"

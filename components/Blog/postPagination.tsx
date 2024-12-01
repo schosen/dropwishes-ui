@@ -7,7 +7,6 @@ interface PaginationProps {
   postsPerPage: number;
   currentPage: number;
   onPageChange: (page: number) => void;
-  category: string | null;
 }
 
 export default function Pagination({
@@ -16,8 +15,8 @@ export default function Pagination({
   currentPage,
   onPageChange,
 }: PaginationProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  // const router = useRouter();
+  // const searchParams = useSearchParams();
   const totalPages = Math.ceil(totalPosts / postsPerPage);
 
 

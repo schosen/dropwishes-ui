@@ -37,17 +37,17 @@ export default async function BlogPage({searchParams}: {searchParams: Promise<{ 
           categories={categories}
           totalPosts={totalPosts}
           postsPerPage={postsPerPage}
-         className="py-16 lg:py-28" />
+          className="py-16 lg:py-28" />
 
         {/* === SECTION 1 === */}
         <SectionPromo2 className="pb-16 lg:pb-28" />
 
-        <BlogPosts
+        {/* <BlogPosts
           initialPosts={initialPosts}
           categories={categories}
           totalPosts={totalPosts}
           postsPerPage={postsPerPage}
-        />
+        /> */}
       </div>
     </div>
   )
