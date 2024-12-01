@@ -1,6 +1,6 @@
-// import { WishlistIds } from '@/interfaces/interface';
+// import { WishlistIds } from '@/interfaces/wishlist';
 import { viewWishlists } from '@/services/wishlistService';
-import { Wishlist } from '@/interfaces/interface';
+import { Wishlist } from '@/interfaces/wishlist';
 import ReserveProduct from '@/components/UserWishlist/reserveProduct';
 
 

@@ -2,6 +2,23 @@
 
 // export default nextConfig;
 module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: `${process.env.IMAGE_HOST_NAME}`,
+        port: "",
+        // pathname: "/account123/**",
+      },
+      {
+        // this is needed only for dummy/ placeholder images, can be removed once no longer needed
+        protocol: "https",
+        hostname: "images.pexels.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
   // use for production
   // async rewrites() {
   //   return [
