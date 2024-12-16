@@ -66,7 +66,7 @@ body{
     /* align-items: start; */
 }
 
-main{
+.anonWishlistForm{
     background-color:var(--white);
     display: flex;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -98,7 +98,7 @@ li{
         justify-content: center;
         align-items: start;
     } */
-    main{
+    .anonWishlistForm{
         width:36%;
         min-width:345px;
         border-radius:0.8rem;
@@ -138,7 +138,7 @@ li{
         margin-left: 7%;
     } */
 
-    main{
+    .anonWishlistForm{
         width:365px;
         /* min-width:345px; */
         min-height:var(--form-min-height);

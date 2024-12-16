@@ -11,6 +11,12 @@ module.exports = {
         // pathname: "/account123/**",
       },
       {
+        protocol: "http",
+        hostname: "localhost",
+        port: "8000",
+        // pathname: "/account123/**",
+      },
+      {
         // this is needed only for dummy/ placeholder images, can be removed once no longer needed
         protocol: "https",
         hostname: "images.pexels.com",
