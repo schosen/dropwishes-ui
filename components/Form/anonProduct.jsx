@@ -1,7 +1,7 @@
 import utilStyles from "../../styles/utils.module.css";
 import productStyles from "../../styles/Product.module.css";
 import { useState } from "react";
-import { linkRegex } from "../../constants/regexConstants";
+import { linkRegex } from "../../contains/regexConstants";
 import { uploadImage } from "../../utils/imageStorage";
 import Image from 'next/image'
 

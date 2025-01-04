@@ -2,6 +2,7 @@
 import { getWishlist } from "@/services/wishlistService";
 import UserProduct from "@/components/UserWishlist/userProducts";
 import Link from "next/link";
+import GiftExplorer from "@/components/AffiliateProducts/GiftExplorer";
 
 
 export default async function WishlistPage({ params }: { params: { uuid: string } }) {
@@ -42,8 +43,6 @@ export default async function WishlistPage({ params }: { params: { uuid: string 
 
         <div className="flex flex-col lg:flex-row">
           <div className="w-full lg:w-[36%] ">
-            {/* ADDITIONAL BOARDER TO ADD TO ABOVE CLASSNAME */}
-            {/* border border-slate-200 dark:border-slate-700 rounded-xl */}
 
               < UserProduct
                 WishlistProducts={wishlist.products}
@@ -52,13 +51,16 @@ export default async function WishlistPage({ params }: { params: { uuid: string 
               />
           </div>
 
-          <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16 "></div>
+          {/*  <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-14 2xl:mx-16 "></div> */}
 
+          <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-10 2xl:mx-10 "></div>
 
           <div className="flex-1">
             <h3 className="text-lg font-semibold">Use Gift Explorer</h3>
 
             {/* AFFILIATE MARKETING PRODUCTS GO HERE */}
+
+            < GiftExplorer />
           </div>
         </div>
       </main>

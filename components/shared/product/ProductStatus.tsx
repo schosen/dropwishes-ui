@@ -1,11 +1,10 @@
 import {
   NoSymbolIcon,
-  ClockIcon,
+  // ClockIcon,
   SparklesIcon,
 } from "@heroicons/react/24/outline";
-// import { Product } from "@/data/data";
 import React, { FC } from "react";
-import IconDiscount from "./IconDiscount";
+import IconDiscount from "../IconDiscount";
 
 interface Props {
   status: string;
@@ -45,14 +44,14 @@ const ProductStatus: FC<Props> = ({
         </div>
       );
     }
-    if (status === "limited edition") {
-      return (
-        <div className={CLASSES}>
-          <ClockIcon className="w-3.5 h-3.5" />
-          <span className="ms-1 leading-none">{status}</span>
-        </div>
-      );
-    }
+    // if (status === "limited edition") {
+    //   return (
+    //     <div className={CLASSES}>
+    //       <ClockIcon className="w-3.5 h-3.5" />
+    //       <span className="ms-1 leading-none">{status}</span>
+    //     </div>
+    //   );
+    // }
     return null;
   };
 

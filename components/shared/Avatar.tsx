@@ -1,4 +1,4 @@
-import { avatarColors } from "../placeholder/content";
+import { avatarColors } from "../../contains/content";
 import React, { FC } from "react";
 // import { avatarImgs } from "@/contains/fakeData";
 import VerifyIcon from "@/components/shared/social/VerifyIcon";

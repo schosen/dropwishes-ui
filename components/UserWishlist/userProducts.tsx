@@ -1,12 +1,12 @@
 "use client"
 import { ChangeEvent, MouseEvent, useState } from "react";
-import { linkRegex } from "../../constants/regexConstants";
+import { linkRegex } from "../../contains/regexConstants";
 import { uploadImage } from "../../utils/imageStorage";
 import { Product } from "@/interfaces/wishlist";
 import Image from 'next/image'
 import axiosInstance from "@/utils/axios";
 import Prices from "../shared/Prices";
-import ProductStatus from "../shared/ProductStatus";
+import ProductStatus from "../shared/product/ProductStatus";
 import ButtonPrimary from "../shared/button/ButtonPrimary";
 import ButtonSecondary from "../shared/button/ButtonSecondary";
 import Label from "../shared/Label";
@@ -188,7 +188,8 @@ export default function AnonProduct({
 	return (
 		<>
 			<fieldset>
-				<div className="border border-slate-200 dark:border-slate-700 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block">
+				{/* shadow-xl is the shadow border-slate-200 is default*/}
+				<div className="border border-slate-100 dark:border-slate-700 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block shadow-xl">
 				{isProductSelected ?
 
 				<>
@@ -359,10 +360,13 @@ export default function AnonProduct({
 
 				{/* ============= */}
 
-					<button
-					type='button'
-					className=""
-					onClick={handleAddNewProduct}> Add product </button>
+				<div className="flex flex-col sm:flex-row pt-6">
+					<ButtonPrimary
+						type='button'
+						className="sm:!px-7 shadow-none"
+						onClick={handleAddNewProduct}>
+						Add product
+					</ButtonPrimary>
 
 					<ButtonSecondary
 						className="mt-3 sm:mt-0 sm:ml-3"
@@ -370,6 +374,9 @@ export default function AnonProduct({
           >
             Cancel
           </ButtonSecondary>
+
+				</div>
+				{/* ============= */}
 
 				</>
 				:
