@@ -29,7 +29,7 @@ interface Product {
   id: string;
   name: string;
   priority?: string;
-  price: number;
+  price: string;
   notes?: string;
   link?: string;
   image: string | null;

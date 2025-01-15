@@ -6,6 +6,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "../BagIcon";
 import NcInputNumber from "../NcInputNumber";
 // import { PRODUCTS } from "@/data/data";
+import { PLACEHOLDER_PRODUCTS } from "@/contains/fakeData";
 import { AffiliateProduct } from "@/interfaces/wishlist";
 import {
   NoSymbolIcon,
@@ -15,9 +16,9 @@ import {
 import IconDiscount from "../IconDiscount";
 import Prices from "../Prices";
 import toast from "react-hot-toast";
-import detail1JPG from "@/images/products/detail1.jpg";
-import detail2JPG from "@/images/products/detail2.jpg";
-import detail3JPG from "@/images/products/detail3.jpg";
+// import detail1JPG from "@/images/products/detail1.jpg";
+// import detail2JPG from "@/images/products/detail2.jpg";
+// import detail3JPG from "@/images/products/detail3.jpg";
 import NotifyAddTocart from "../NotifyAddTocart";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,10 +28,13 @@ export interface ProductQuickView2Props {
   afProduct: AffiliateProduct
 }
 
-const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "", afProduct }) => {
+const ProductQuickView2: FC<ProductQuickView2Props> = ({
+  className = "",
+  afProduct = PLACEHOLDER_PRODUCTS[0]
+}) => {
   // const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
-  const { sizes, variants, status, allOfSizes } = afProduct;
-  const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
+  const { sizes, variants, status, allOfSizes, image } = afProduct;
+  // const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
 
   const [variantActive, setVariantActive] = useState(0);
   const [sizeSelected, setSizeSelected] = useState(sizes ? sizes[0] : "");
@@ -40,7 +44,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "", afProdu
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={LIST_IMAGES_DEMO[0]}
+          productImage={image}
           qualitySelected={qualitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}
@@ -252,7 +256,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "", afProdu
             onClick={notifyAddTocart}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-            <span className="ml-3">Add to cart</span>
+            <span className="ml-3">Add to list</span>
           </ButtonPrimary>
         </div>
 
@@ -284,7 +288,7 @@ const ProductQuickView2: FC<ProductQuickView2Props> = ({ className = "", afProdu
               <Image
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                src={LIST_IMAGES_DEMO[0]}
+                src={image}
                 className="w-full rounded-xl object-cover"
                 alt="product detail 1"
               />

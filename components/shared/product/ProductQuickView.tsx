@@ -6,6 +6,7 @@ import { StarIcon } from "@heroicons/react/24/solid";
 import BagIcon from "../BagIcon";
 import NcInputNumber from "../NcInputNumber";
 // import { PRODUCTS } from "@/data/data";
+import { PLACEHOLDER_PRODUCTS } from "@/contains/fakeData";
 import { AffiliateProduct } from "@/interfaces/wishlist";
 import {
   NoSymbolIcon,
@@ -15,9 +16,9 @@ import {
 import IconDiscount from "../IconDiscount";
 import Prices from "../Prices";
 import toast from "react-hot-toast";
-import detail1JPG from "@/images/products/detail1.jpg";
-import detail2JPG from "@/images/products/detail2.jpg";
-import detail3JPG from "@/images/products/detail3.jpg";
+// import detail1JPG from "@/images/products/detail1.jpg";
+// import detail2JPG from "@/images/products/detail2.jpg";
+// import detail3JPG from "@/images/products/detail3.jpg";
 import NotifyAddTocart from "../NotifyAddTocart";
 import AccordionInfo from "../AccordionInfo";
 import Image from "next/image";
@@ -28,10 +29,13 @@ export interface ProductQuickViewProps {
   product: AffiliateProduct
 }
 
-const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", product }) => {
+const ProductQuickView: FC<ProductQuickViewProps> = ({
+  className = "",
+  product = PLACEHOLDER_PRODUCTS[0]
+  }) => {
   // const { sizes, variants, status, allOfSizes } = PRODUCTS[0];
-  const { sizes, variants, status, allOfSizes } = product;
-  const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
+  const { sizes, variants, status, allOfSizes, image } = product;
+  // const LIST_IMAGES_DEMO = [detail1JPG, detail2JPG, detail3JPG];
 
   const [variantActive, setVariantActive] = useState(0);
   const [sizeSelected, setSizeSelected] = useState(sizes ? sizes[0] : "");
@@ -41,7 +45,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", product }
     toast.custom(
       (t) => (
         <NotifyAddTocart
-          productImage={LIST_IMAGES_DEMO[0]}
+          productImage={image}
           qualitySelected={qualitySelected}
           show={t.visible}
           sizeSelected={sizeSelected}
@@ -253,7 +257,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", product }
             onClick={notifyAddTocart}
           >
             <BagIcon className="hidden sm:inline-block w-5 h-5 mb-0.5" />
-            <span className="ms-3">Add to cart</span>
+            <span className="ms-3">Add to list</span>
           </ButtonPrimary>
         </div>
 
@@ -300,7 +304,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", product }
           <div className="relative">
             <div className="aspect-w-16 aspect-h-16">
               <Image
-                src={LIST_IMAGES_DEMO[0]}
+                src={image}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="w-full rounded-xl object-cover"
@@ -313,7 +317,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", product }
             {/* META FAVORITES */}
             <LikeButton className="absolute end-3 top-3 " />
           </div>
-          <div className="hidden lg:grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-5 xl:mt-5">
+          {/* <div className="hidden lg:grid grid-cols-2 gap-3 mt-3 sm:gap-6 sm:mt-6 xl:gap-5 xl:mt-5">
             {[LIST_IMAGES_DEMO[1], LIST_IMAGES_DEMO[2]].map((item, index) => {
               return (
                 <div key={index} className="aspect-w-3 aspect-h-4">
@@ -327,7 +331,7 @@ const ProductQuickView: FC<ProductQuickViewProps> = ({ className = "", product }
                 </div>
               );
             })}
-          </div>
+          </div> */}
         </div>
 
         {/* SIDEBAR */}

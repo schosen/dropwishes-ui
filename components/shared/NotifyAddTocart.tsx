@@ -1,7 +1,8 @@
 import React, { FC } from "react";
 import { Transition } from "@/app/headlessui";
 import Prices from "./Prices";
-import { PRODUCTS } from "@/data/data";
+// import { PRODUCTS } from "@/data/data";
+import { PLACEHOLDER_PRODUCTS } from "@/contains/fakeData";
 import Image, { StaticImageData } from "next/image";
 
 interface Props {
@@ -19,7 +20,7 @@ const NotifyAddTocart: FC<Props> = ({
   qualitySelected,
   sizeSelected,
 }) => {
-  const { name, price, variants } = PRODUCTS[0];
+  const { name, price, variants } = PLACEHOLDER_PRODUCTS[0];
 
   const renderProductCartOnNotify = () => {
     return (

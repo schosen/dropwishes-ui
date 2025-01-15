@@ -2,8 +2,17 @@ import Input from "../shared/Input";
 import ButtonCircle from "../shared/button/ButtonCircle";
 import HeaderFilterSearchPage from "./HeaderFilterSearchPage";
 import ProductCard from "../shared/product/ProductCard";
+import { AffiliateProduct } from "@/interfaces/wishlist";
+import { PLACEHOLDER_PRODUCTS } from "@/contains/fakeData";
+import ButtonPrimary from "../shared/button/ButtonPrimary";
 
-const GiftExplorer = ({}) => {
+export interface GiftExplorerProps {
+  data?: AffiliateProduct;
+}
+
+const GiftExplorer = ({
+  data = PLACEHOLDER_PRODUCTS
+}) => {
   return (
     <div className={`nc-PageSearch`} data-nc-id="PageSearch">
       <div
@@ -70,10 +79,14 @@ const GiftExplorer = ({}) => {
 
           {/* PRODUCT ITEMS */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-10 mt-8 lg:mt-10">
-            {PRODUCTS.map((item, index) => (
+            {data.map((item, index) => (
               <ProductCard data={item} key={index} />
             ))}
+          </div>
 
+          {/* PAGINATION */}
+          <div className="flex flex-col mt-12 lg:mt-16 space-y-5 sm:space-y-0 sm:space-x-3 sm:flex-row sm:justify-between sm:items-center">
+            <ButtonPrimary loading>Show me more</ButtonPrimary>
           </div>
 
         </div>

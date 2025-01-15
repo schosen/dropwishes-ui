@@ -330,7 +330,7 @@ const TabFilters = () => {
                   ? DATA_sortOrderRadios.filter(
                       (i) => i.id === sortOrderStates
                     )[0].name
-                  : "Sort order"}
+                  : "Sort"}
               </span>
               {!sortOrderStates.length ? (
                 <ChevronDownIcon className="w-4 h-4 ml-3" />

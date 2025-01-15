@@ -4,7 +4,8 @@ import React, { FC, useState } from "react";
 import LikeButton from "../LikeButton";
 import Prices from "../Prices";
 import { ArrowsPointingOutIcon } from "@heroicons/react/24/outline";
-import { Product, PRODUCTS } from "@/data/data";
+// import { Product, PRODUCTS } from "@/data/data";
+import { PLACEHOLDER_PRODUCTS } from "@/contains/fakeData";
 import { AffiliateProduct } from "@/interfaces/wishlist";
 import { StarIcon } from "@heroicons/react/24/solid";
 import ButtonPrimary from "../button/ButtonPrimary";
@@ -23,12 +24,16 @@ export interface ProductCardProps {
   className?: string;
   data?: AffiliateProduct;
   isLiked?: boolean;
+  addRating?: boolean;
+  addDescription?: boolean;
 }
 
 const ProductCard: FC<ProductCardProps> = ({
   className = "",
-  data = PRODUCTS[0],
+  data = PLACEHOLDER_PRODUCTS[0],
   isLiked,
+  addRating = false,
+  addDescription = false,
 }) => {
   const {
     name,
@@ -153,66 +158,67 @@ const ProductCard: FC<ProductCardProps> = ({
     return "border-transparent";
   };
 
-  const renderVariants = () => {
-    if (!variants || !variants.length || !variantType) {
-      return null;
-    }
+  // this is color variants under picture
+  // const renderVariants = () => {
+  //   if (!variants || !variants.length || !variantType) {
+  //     return null;
+  //   }
 
-    if (variantType === "color") {
-      return (
-        <div className="flex gap-1.5">
-          {variants.map((variant, index) => (
-            <div
-              key={index}
-              onClick={() => setVariantActive(index)}
-              className={`relative w-6 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
-                variantActive === index
-                  ? getBorderClass(variant.color)
-                  : "border-transparent"
-              }`}
-              title={variant.name}
-            >
-              <div
-                className={`absolute inset-0.5 rounded-full z-0 ${variant.color}`}
-              ></div>
-            </div>
-          ))}
-        </div>
-      );
-    }
+  //   if (variantType === "color") {
+  //     return (
+  //       <div className="flex gap-1.5">
+  //         {variants.map((variant, index) => (
+  //           <div
+  //             key={index}
+  //             onClick={() => setVariantActive(index)}
+  //             className={`relative w-6 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
+  //               variantActive === index
+  //                 ? getBorderClass(variant.color)
+  //                 : "border-transparent"
+  //             }`}
+  //             title={variant.name}
+  //           >
+  //             <div
+  //               className={`absolute inset-0.5 rounded-full z-0 ${variant.color}`}
+  //             ></div>
+  //           </div>
+  //         ))}
+  //       </div>
+  //     );
+  //   }
 
-    return (
-      <div className="flex ">
-        {variants.map((variant, index) => (
-          <div
-            key={index}
-            onClick={() => setVariantActive(index)}
-            className={`relative w-11 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
-              variantActive === index
-                ? "border-black dark:border-slate-300"
-                : "border-transparent"
-            }`}
-            title={variant.name}
-          >
-            <div
-              className="absolute inset-0.5 rounded-full overflow-hidden z-0 bg-cover"
-              style={{
-                backgroundImage: `url(${
-                  // @ts-ignore
-                  typeof variant.thumbnail?.src === "string"
-                    ? // @ts-ignore
-                      variant.thumbnail?.src
-                    : typeof variant.thumbnail === "string"
-                    ? variant.thumbnail
-                    : ""
-                })`,
-              }}
-            ></div>
-          </div>
-        ))}
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="flex ">
+  //       {variants.map((variant, index) => (
+  //         <div
+  //           key={index}
+  //           onClick={() => setVariantActive(index)}
+  //           className={`relative w-11 h-6 rounded-full overflow-hidden z-10 border cursor-pointer ${
+  //             variantActive === index
+  //               ? "border-black dark:border-slate-300"
+  //               : "border-transparent"
+  //           }`}
+  //           title={variant.name}
+  //         >
+  //           <div
+  //             className="absolute inset-0.5 rounded-full overflow-hidden z-0 bg-cover"
+  //             style={{
+  //               backgroundImage: `url(${
+  //                 // @ts-ignore
+  //                 typeof variant.thumbnail?.src === "string"
+  //                   ? // @ts-ignore
+  //                     variant.thumbnail?.src
+  //                   : typeof variant.thumbnail === "string"
+  //                   ? variant.thumbnail
+  //                   : ""
+  //               })`,
+  //             }}
+  //           ></div>
+  //         </div>
+  //       ))}
+  //     </div>
+  //   );
+  // };
 
   const renderGroupButtons = () => {
     return (
@@ -220,46 +226,47 @@ const ProductCard: FC<ProductCardProps> = ({
         <ButtonPrimary
           className="shadow-lg"
           fontSize="text-xs"
-          sizeClass="py-2 px-4"
+          sizeClass="py-2 px-3"
           onClick={() => notifyAddTocart({ size: "XL" })}
         >
           <BagIcon className="w-3.5 h-3.5 mb-0.5" />
-          <span className="ms-1">Add to bag</span>
+          <span className="ms-1">Add</span>
         </ButtonPrimary>
         <ButtonSecondary
           className="ms-1.5 bg-white hover:!bg-gray-100 hover:text-slate-900 transition-colors shadow-lg"
           fontSize="text-xs"
-          sizeClass="py-2 px-4"
+          sizeClass="py-2 px-3"
           onClick={() => setShowModalQuickView(true)}
         >
           <ArrowsPointingOutIcon className="w-3.5 h-3.5" />
-          <span className="ms-1">Quick view</span>
+          <span className="ms-1">View</span>
         </ButtonSecondary>
       </div>
     );
   };
 
-  const renderSizeList = () => {
-    if (!sizes || !sizes.length) {
-      return null;
-    }
+  // this is size list under product picture
+  // const renderSizeList = () => {
+  //   if (!sizes || !sizes.length) {
+  //     return null;
+  //   }
 
-    return (
-      <div className="absolute bottom-0 inset-x-1 gap-2 flex flex-wrap justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
-        {sizes.map((size, index) => {
-          return (
-            <div
-              key={index}
-              className="nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900"
-              onClick={() => notifyAddTocart({ size })}
-            >
-              {size}
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
+  //   return (
+  //     <div className="absolute bottom-0 inset-x-1 gap-2 flex flex-wrap justify-center opacity-0 invisible group-hover:bottom-4 group-hover:opacity-100 group-hover:visible transition-all">
+  //       {sizes.map((size, index) => {
+  //         return (
+  //           <div
+  //             key={index}
+  //             className="nc-shadow-lg w-10 h-10 rounded-xl bg-white hover:bg-slate-900 hover:text-white transition-colors cursor-pointer flex items-center justify-center uppercase font-semibold tracking-tight text-sm text-slate-900"
+  //             onClick={() => notifyAddTocart({ size })}
+  //           >
+  //             {size}
+  //           </div>
+  //         );
+  //       })}
+  //     </div>
+  //   );
+  // };
 
   return (
     <>
@@ -281,28 +288,35 @@ const ProductCard: FC<ProductCardProps> = ({
           </Link>
           <ProductStatus status={status} />
           <LikeButton liked={isLiked} className="absolute top-3 end-3 z-10" />
-          {sizes ? renderSizeList() : renderGroupButtons()}
+          {/* {sizes ? renderSizeList() : renderGroupButtons()} */}
+          {renderGroupButtons()}
         </div>
 
         <div className="space-y-4 px-2.5 pt-5 pb-2.5">
-          {renderVariants()}
+          {/* {renderVariants()} */}
+          {renderGroupButtons()}
           <div>
             <h2 className="nc-ProductCard__title text-base font-semibold transition-colors">
               {name}
             </h2>
-            <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
-              {description}
-            </p>
+            {addDescription && (
+              <p className={`text-sm text-slate-500 dark:text-slate-400 mt-1 `}>
+                {description}
+              </p>
+            )}
           </div>
 
           <div className="flex justify-between items-end ">
             <Prices price={price} />
-            <div className="flex items-center mb-0.5">
+
+            {/* REVIEWS */}
+            {addRating &&
+              (<div className="flex items-center mb-0.5">
               <StarIcon className="w-5 h-5 pb-[1px] text-amber-400" />
               <span className="text-sm ms-1 text-slate-500 dark:text-slate-400">
                 {rating || ""} ({numberOfReviews || 0} reviews)
               </span>
-            </div>
+            </div>)}
           </div>
         </div>
       </div>
