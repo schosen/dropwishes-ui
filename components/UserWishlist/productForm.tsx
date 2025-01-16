@@ -7,7 +7,7 @@ import ButtonSecondary from "@/components/shared/button/ButtonSecondary";
 import Select from '@/components/shared/Select';
 import { uploadImage } from '@/utils/imageStorage';
 import { Product } from '@/interfaces/wishlist';
-import { linkRegex } from "@/contains/regexConstants";
+import { linkRegex, base64Regex } from "@/contains/regexConstants";
 import axiosInstance from '@/utils/axios';
 
 interface ProductFormProps {
@@ -15,11 +15,19 @@ interface ProductFormProps {
   uuid: string;
   onCancel: () => void;
   onSave: (product: Product) => void
-  method: string
+  isCreate?: bool
+  isUpdate?: bool
 }
 
 
-const ProductForm: React.FC<ProductFormProps> = ({ product, uuid, onCancel, onSave, method }) => {
+const ProductForm: React.FC<ProductFormProps> = ({
+  product,
+  uuid,
+  onCancel,
+  onSave,
+  isCreate = false,
+  isUpdate = false,
+}) => {
   const [validForm, setValidForm] = useState({
 		hasValidName: true,
 		hasValidPrice: true,
@@ -169,7 +177,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, uuid, onCancel, onSa
 				const response = await axiosInstance.patch<Product>(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/products/${product.id}/`, formData);
 				// onSave(response.data);
 				setFormData([{name: "", link: null, priority: "", price: "", image: null, notes: ""}]);
-        onSave(response.data.products)
+        onSave(response.data)
 				// handleCancelClick();
 			} catch (error) {
 				console.error('Failed to update product', error);
@@ -320,7 +328,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, uuid, onCancel, onSa
             name="image"
             // maxLength={32}
           />
-          {product.image && <Image src={product.image} alt={product.name} width="60" height="60"/>}
+          {product.image && base64Regex.test(product.image) && <Image src={product.image} alt={product.name} width="60" height="60"/>}
 
         </div>
 
@@ -350,7 +358,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, uuid, onCancel, onSa
 
       <div className="flex flex-col sm:flex-row pt-6">
 
-        {method == "CREATE" &&
+        {isCreate &&
           <ButtonPrimary
             type='button'
             className="sm:!px-7 shadow-none"
@@ -359,7 +367,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ product, uuid, onCancel, onSa
           </ButtonPrimary>
         }
 
-        { method == "UPDATE" &&
+        { isUpdate &&
           <ButtonPrimary
             type='button'
             className="sm:!px-7 shadow-none"

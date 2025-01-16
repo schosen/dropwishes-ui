@@ -72,12 +72,13 @@ export default function UserProduct({
 
 		console.log("MAX ID PRODUCT: ", recentProduct)
 
-		setProducts([...products, recentProduct]);
+		setProducts((prevProducts) => [recentProduct, ...prevProducts]);
 		handleCancelClick()
 
 	}
 
 	const updateList  = async (updatedProduct: Product) => {
+		console.log("UPDATED PROD: ", updatedProduct)
 		setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.id === updatedProduct.id ? updatedProduct : product
@@ -200,7 +201,7 @@ export default function UserProduct({
 							uuid={uuid}
 							onSave={updateList}
 							onCancel={handleCancelClick}
-							method="UPDATE"
+							isUpdate={true}
 						/>
 					}
 
@@ -210,7 +211,7 @@ export default function UserProduct({
 							uuid={uuid}
 							onSave={saveList}
 							onCancel={handleCancelClick}
-							method="CREATE"
+							isCreate={true}
 						/>
 					}
 
