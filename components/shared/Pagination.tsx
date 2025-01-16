@@ -1,4 +1,3 @@
-import { CustomLink } from "@/interfaces/types";
 import React, { FC } from "react";
 import twFocusClass from "@/utils/twFocusClass";
 

@@ -67,7 +67,7 @@ export default function Home() {
         <meta name="description" content="Dropwishes website" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <main>
+      <div className="anonWishlistForm">
         {showForm && <Welcome handleFormToggle={handleFormToggle} />}
         {!showForm && (
           <>
@@ -88,7 +88,7 @@ export default function Home() {
             />
           </>
         )}
-      </main>
+      </div>
     </>
   );
 }

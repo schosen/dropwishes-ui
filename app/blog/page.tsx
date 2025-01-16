@@ -42,6 +42,7 @@ export default async function BlogPage({searchParams}: {searchParams: Promise<{ 
         {/* === SECTION 1 === */}
         <SectionPromo2 className="pb-16 lg:pb-28" />
 
+        {/* TODO - remove <BlogPosts> below and all components specific to it, the updated version is used above */}
         {/* <BlogPosts
           initialPosts={initialPosts}
           categories={categories}
