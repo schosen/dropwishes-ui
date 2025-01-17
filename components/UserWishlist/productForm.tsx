@@ -328,7 +328,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             name="image"
             // maxLength={32}
           />
-          {product.image && base64Regex.test(product.image) && <Image src={product.image} alt={product.name} width="60" height="60"/>}
+          {formData.image && base64Regex.test(formData.image) && <Image src={formData.image} alt={formData.name} width="60" height="60"/>}
 
         </div>
 
