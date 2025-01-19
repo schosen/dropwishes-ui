@@ -16,6 +16,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 	const [editingWishlist, setEditingWishlist] = useState<Wishlist>({title: "", description: "", occasion_date: null, address: "", products: []});
   const [isCreating, setIsCreating] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
+  const [deletingWishlist, setDeletingWishlist] = useState<Wishlist | null>(null);
 
   async function shareWishlists(wishlistId: string[]): Promise<string> {
     try {
@@ -83,15 +84,15 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
 	}
 
-	async function handleRemoveProduct(uuid: string) {
+	async function handleRemoveWishlist(uuid: string) {
 		// creates new array without the item to remove (using index to remove)
 
     try {
       const response = await axiosInstance.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/wishlists/${uuid}/`)
 
       const updatedWishlist = wishlists.filter((v) => v.uuid !== uuid);
-      console.log("UPDATED PRODUCTS: ", updatedWishlist)
       setWishlists(updatedWishlist);
+      setDeletingWishlist(null);
 
     } catch (error) {
       console.log("error: ", error)
@@ -103,6 +104,30 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
   return(
       <div className='mt-48'>
+
+      {deletingWishlist && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-md">
+            <h3 className="text-lg font-bold mb-4">
+              Confirm deletion of "{deletingWishlist.title}" wishlist.
+            </h3>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setDeletingWishlist(null)}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleRemoveWishlist(deletingWishlist.uuid)}
+                className="px-4 py-2 bg-red-500 text-white rounded"
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {shareLink && (
 
@@ -160,7 +185,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
             </button>
 
             <button
-              type="button" onClick={() => handleRemoveProduct(wishlist.uuid)}
+              type="button" onClick={() => setDeletingWishlist(wishlist)}
               className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
             >
               <span>Delete</span>

@@ -33,6 +33,7 @@ export default function UserProduct({
 		setIsList(true);
 		setIsUpdating(false);
 		setIsCreating(false);
+		setEditingProduct({name: "", link: null, priority: "", price: "", image: null , notes: ""})
 	};
 
 	const handleCreateClick = () => {
@@ -66,6 +67,7 @@ export default function UserProduct({
         product.id === updatedProduct.id ? updatedProduct : product
       )
     );
+		setEditingProduct({name: "", link: null, priority: "", price: "", image: null , notes: ""})
 		handleCancelClick()
 
 	}
