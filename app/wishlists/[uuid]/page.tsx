@@ -46,7 +46,6 @@ export default async function WishlistPage({ params }: { params: { uuid: string 
 
               < UserProduct
                 WishlistProducts={wishlist.products}
-                setProducts={null}
                 uuid={params.uuid}
               />
           </div>

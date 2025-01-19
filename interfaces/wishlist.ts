@@ -2,7 +2,7 @@ import { StaticImageData } from "next/image";
 
 // WISHLIST INTERFACE
 interface Wishlist {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   occasion_date: string | null;

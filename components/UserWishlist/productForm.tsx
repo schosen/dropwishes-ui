@@ -145,21 +145,10 @@ const ProductForm: React.FC<ProductFormProps> = ({
         products: [formData]
       });
 
-        // let responseProducts = response.data.products
-
-        // const recentProduct = responseProducts.reduce(
-        //   (max, product) =>  product.id > max.id ? product : max,
-        //   responseProducts[0]
-        // );
-
-        // console.log("MAX ID PRODUCT: ", recentProduct)
-
-        // setProducts([...products, recentProduct]);
-        setFormData([{name: "", link: null, priority: "", price: "", image: null, notes: ""}]);
+        setFormData({name: "", link: null, priority: "", price: "", image: null, notes: ""});
 
         onSave(response.data.products)
-				// handleCancelClick()
-        // setIsProductSelected(false);
+
       } catch (error) {
         console.log("error: ", error)
       }
@@ -328,7 +317,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             name="image"
             // maxLength={32}
           />
-          {product.image && base64Regex.test(product.image) && <Image src={product.image} alt={product.name} width="60" height="60"/>}
+          {formData.image && base64Regex.test(formData.image) && <Image src={formData.image} alt={formData.name} width="60" height="60"/>}
 
         </div>
 

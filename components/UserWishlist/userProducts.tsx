@@ -1,27 +1,19 @@
 "use client"
-import { ChangeEvent, MouseEvent, useState } from "react";
-import { linkRegex } from "../../contains/regexConstants";
-import { uploadImage } from "../../utils/imageStorage";
+import { useState } from "react";
 import { Product } from "@/interfaces/wishlist";
 import Image from 'next/image'
 import axiosInstance from "@/utils/axios";
 import Prices from "@/components/shared/Prices";
 import ProductStatus from "@/components/shared/product/ProductStatus";
 import ButtonPrimary from "@/components/shared/button/ButtonPrimary";
-import ButtonSecondary from "../shared/button/ButtonSecondary";
 import ProductForm from "@/components/UserWishlist/productForm";
-import Label from "../shared/Label";
-import Input from "../shared/Input";
-import Select from "../shared/Select";
 
 export default function UserProduct({
 	WishlistProducts,
 	uuid
 
-}: {WishlistProducts: Product[], setProducts: Product[], uuid: string}) {
+}: {WishlistProducts: Product[], uuid: string}) {
 
-	// const [isProductSelected, setIsProductSelected] = useState(false)
-	// const [product, setProduct] = useState({name: "", link: null, priority: "", price: "", image: null , notes: ""});
 	// const [errMessage, setErrMessage] = useState("")
   const [products, setProducts] = useState(WishlistProducts)
 	const [isList, setIsList] = useState(true)
@@ -30,18 +22,10 @@ export default function UserProduct({
 	const [editingProduct, setEditingProduct] = useState<Product>({name: "", link: null, priority: "", price: "", image: null , notes: ""});
 
 
-
-	// const handleClick = () => {
-	// 	setIsProductSelected(!isProductSelected);
-
-	// };
-
 	const handleEditClick = (product: Product) => {
 		setIsList(false);
 		setIsUpdating(true);
 		setIsCreating(false);
-		console.log("IsUpdating: ", isUpdating)
-		console.log("IsList: ", isList)
 		setEditingProduct(product)
 	};
 
@@ -49,8 +33,7 @@ export default function UserProduct({
 		setIsList(true);
 		setIsUpdating(false);
 		setIsCreating(false);
-		console.log("IsCreating: ", isCreating)
-		console.log("IsList: ", isList)
+		setEditingProduct({name: "", link: null, priority: "", price: "", image: null , notes: ""})
 	};
 
 	const handleCreateClick = () => {
@@ -84,6 +67,7 @@ export default function UserProduct({
         product.id === updatedProduct.id ? updatedProduct : product
       )
     );
+		setEditingProduct({name: "", link: null, priority: "", price: "", image: null , notes: ""})
 		handleCancelClick()
 
 	}
