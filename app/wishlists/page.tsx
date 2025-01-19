@@ -1,7 +1,7 @@
 import useAuthRedirect from '../../hooks/useAuthRedirect';
 import { getWishlists } from '@/services/wishlistService';
 import { redirect } from 'next/navigation';
-import UserWishlists from "../../components/UserWishlist/index";
+import UserWishlists from "../../components/UserWishlist";
 
 export default async function WishlistsPage() {
   // useAuthRedirect('/auth/login', false);

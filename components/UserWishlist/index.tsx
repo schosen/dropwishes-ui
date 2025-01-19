@@ -4,12 +4,18 @@ import CopyLink from "./copyLink";
 import { useState } from 'react';
 import axiosInstance from '../../utils/axios';
 import Link from 'next/link'
+import ButtonPrimary from "@/components/shared/button/ButtonPrimary";
+import WishlistForm from "./wishlistForm";
 
 
 function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
+  const [wishlists, setWishlists] = useState(wishlistData)
   const [selectView, setSelectView] = useState<boolean>(false)
   const [selectedWishlistIds, setSelectedWishlistIds] = useState<string[]>([]);
   const [shareLink, setShareLink] = useState<string | null>(null);
+	const [editingWishlist, setEditingWishlist] = useState<Wishlist>({title: "", description: "", occasion_date: null, address: "", products: []});
+  const [isCreating, setIsCreating] = useState(false)
+  const [isUpdating, setIsUpdating] = useState(false)
 
   async function shareWishlists(wishlistId: string[]): Promise<string> {
     try {
@@ -42,6 +48,58 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
 	};
 
+
+	const handleEditClick = (wishlist: Wishlist) => {
+		setIsUpdating(true);
+    setIsCreating(false);
+		setEditingWishlist(wishlist);
+	};
+
+  const handleCreateClick = () => {
+		setIsUpdating(false);
+		setIsCreating(true);
+	};
+
+  const handleCancelClick = () => {
+		setIsUpdating(false);
+		setIsCreating(false);
+	};
+
+  const saveList = async (newWishlist: Wishlist) => {
+    setWishlists((prevWishlists) => [newWishlist, ...prevWishlists]);
+		handleCancelClick()
+
+	}
+
+	const updateList  = async (updateWishlist: Wishlist) => {
+		console.log("UPDATED WISH: ", updateWishlist)
+		setWishlists((prevWishlists) =>
+      prevWishlists.map((wishlist) =>
+        wishlist.id === updateWishlist.id ? updateWishlist : wishlist
+      )
+    );
+		handleCancelClick()
+
+	}
+
+	async function handleRemoveProduct(uuid: string) {
+		// creates new array without the item to remove (using index to remove)
+
+    try {
+      const response = await axiosInstance.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/wishlists/${uuid}/`)
+
+      const updatedWishlist = wishlists.filter((v) => v.uuid !== uuid);
+      console.log("UPDATED PRODUCTS: ", updatedWishlist)
+      setWishlists(updatedWishlist);
+
+    } catch (error) {
+      console.log("error: ", error)
+
+    }
+
+
+	};
+
   return(
       <div className='mt-48'>
 
@@ -70,7 +128,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
         handleGenerateLink();
       }}>
         {selectView && (<button type="submit">Generate Share Link</button>)}
-        {wishlistData.map((wishlist: any) => (
+        {wishlists.map((wishlist: any) => (
           <div key={wishlist.id}>
             {selectView && (
             <input
@@ -90,40 +148,54 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
                 {wishlist.title}
               </Link>
             </label>
+
             <p className='text-black dark:text-white font-bold'>Date: {wishlist.occasion_date || 'No date available'}</p>
+
+            <button onClick={() => handleEditClick(wishlist)}
+              type="button"
+              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+            >
+              <span>Edit</span>
+            </button>
+
+            <button
+              type="button" onClick={() => handleRemoveProduct(wishlist.uuid)}
+              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+            >
+              <span>Delete</span>
+            </button>
           </div>
         ))}
 
       </form>
-        {/* <ul>
-          {wishlistData.map((wishlist) => (
-            <li key={wishlist.id}>
-              <h3 className='text-black dark:text-white font-bold'>{wishlist.title}</h3>
-              <p className='text-black dark:text-white font-bold'>Date: {wishlist.occasion_date || 'No date available'}</p>
 
+      {!isUpdating && !isCreating &&
+        <ButtonPrimary
+          className="w-full max-w-[240px]"
+          onClick={handleCreateClick}
+        >
+          Create a wishlist
+        </ButtonPrimary>
+      }
 
-              <ul>
-                {wishlist.products.map((product) => (
-                  <li key={product.id}>
-                    <h4 className='text-black dark:text-white text-sm'>{product.name}</h4>
-                    <p className='text-black dark:text-white text-sm'>Priority: {product.priority || 'No priority'}</p>
-                    <p className='text-black dark:text-white text-sm'>Price: ${product.price}</p>
-                    <p className='text-black dark:text-white text-sm'>Notes: {product.notes || 'No notes'}</p>
-                    {product.link ? (
-                      <p>
-                        <a href={product.link} target="_blank" rel="noopener noreferrer" className='text-black dark:text-white text-sm'>
-                          Product Link
-                        </a>
-                      </p>
-                    ) : (
-                      <p className='text-black dark:text-white text-sm'>No link available</p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul> */}
+    {isUpdating && !isCreating &&
+      <WishlistForm
+        wishlist={editingWishlist}
+        onSave={updateList}
+        onCancel={handleCancelClick}
+        isUpdate={true}
+      />
+    }
+
+    {isCreating && !isUpdating &&
+      <WishlistForm
+        wishlist={editingWishlist}
+        onSave={saveList}
+        onCancel={handleCancelClick}
+        isCreate={true}
+      />
+    }
+
     </div>
 
   );
