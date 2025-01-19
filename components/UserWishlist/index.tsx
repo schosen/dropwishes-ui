@@ -63,6 +63,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
   const handleCancelClick = () => {
 		setIsUpdating(false);
 		setIsCreating(false);
+    setEditingWishlist({title: "", description: "", occasion_date: null, address: "", products: []})
 	};
 
   const saveList = async (newWishlist: Wishlist) => {
@@ -72,12 +73,12 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 	}
 
 	const updateList  = async (updateWishlist: Wishlist) => {
-		console.log("UPDATED WISH: ", updateWishlist)
 		setWishlists((prevWishlists) =>
       prevWishlists.map((wishlist) =>
         wishlist.id === updateWishlist.id ? updateWishlist : wishlist
       )
     );
+    setEditingWishlist({title: "", description: "", occasion_date: null, address: "", products: []})
 		handleCancelClick()
 
 	}
