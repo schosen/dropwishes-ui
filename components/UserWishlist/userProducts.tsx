@@ -45,15 +45,11 @@ export default function UserProduct({
 	};
 
 	const saveList = async (updatedProducts: any) => {
-		// let responseProducts = response.data.products
-
 		// finding the most recent product and adding to setProduct array
 		const recentProduct = updatedProducts.reduce(
 			(max, product) =>  product.id > max.id ? product : max,
 			updatedProducts[0]
 		);
-
-		console.log("MAX ID PRODUCT: ", recentProduct)
 
 		setProducts((prevProducts) => [recentProduct, ...prevProducts]);
 		handleCancelClick()
@@ -61,7 +57,6 @@ export default function UserProduct({
 	}
 
 	const updateList  = async (updatedProduct: Product) => {
-		console.log("UPDATED PROD: ", updatedProduct)
 		setProducts((prevProducts) =>
       prevProducts.map((product) =>
         product.id === updatedProduct.id ? updatedProduct : product
@@ -81,7 +76,6 @@ export default function UserProduct({
       const response = await axiosInstance.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/products/${id}/`)
 
       const updatedProducts = products.filter((v) => v.id !== id);
-      console.log("UPDATED PRODUCTS: ", updatedProducts)
       setProducts(updatedProducts);
 
     } catch (error) {
@@ -153,6 +147,7 @@ export default function UserProduct({
                       <span>Edit</span>
                     </button>
 
+											{/*for some reason the below span is not visable  */}
                     <span className="mx-4 border-l border-slate-200 dark:border-slate-700 "></span>
 
                     <button
@@ -177,7 +172,7 @@ export default function UserProduct({
 
 	return (
 		<>
-			<fieldset>
+			<fieldset className="">
 				<div className="border border-slate-100 dark:border-slate-700 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block shadow-xl">
 					{isUpdating &&
 						<ProductForm

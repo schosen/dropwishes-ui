@@ -6,6 +6,7 @@ import axiosInstance from '../../utils/axios';
 import Link from 'next/link'
 import ButtonPrimary from "@/components/shared/button/ButtonPrimary";
 import WishlistForm from "./wishlistForm";
+import CardCategory4 from '@/components/CardCategories/CardCategory4';
 
 
 function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
@@ -17,6 +18,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
   const [isCreating, setIsCreating] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
   const [deletingWishlist, setDeletingWishlist] = useState<Wishlist | null>(null);
+  let gridClassName = "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
 
   async function shareWishlists(wishlistId: string[]): Promise<string> {
     try {
@@ -85,7 +87,6 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 	}
 
 	async function handleRemoveWishlist(uuid: string) {
-		// creates new array without the item to remove (using index to remove)
 
     try {
       const response = await axiosInstance.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/wishlists/${uuid}/`)
@@ -102,11 +103,31 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
 	};
 
+    const renderEditDelete = (wishlist: Wishlist) => {
+    return (
+      <>
+        <button onClick={() => handleEditClick(wishlist)}
+          type="button"
+          className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+        >
+          <span>Edit</span>
+        </button>
+
+        <button
+          type="button" onClick={() => setDeletingWishlist(wishlist)}
+          className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+        >
+          <span>Delete</span>
+        </button>
+      </>
+    )
+  }
+
   return(
-      <div className='mt-48'>
+      <>
 
       {deletingWishlist && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="z-40 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-md shadow-md">
             <h3 className="text-lg font-bold mb-4">
               Confirm deletion of "{deletingWishlist.title}" wishlist.
@@ -141,7 +162,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
       )}
 
-      <h1 className='font-bold text-black dark:text-white'>Your Wishlists</h1>
+      {/* <h1 className='font-bold text-black dark:text-white'>Your Wishlists</h1> */}
 
 
       {!selectView && (<button onClick={handleClick} className='text-black dark:text-white font-bold'>Share Wishlist</button>)}
@@ -154,6 +175,8 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
         handleGenerateLink();
       }}>
         {selectView && (<button type="submit">Generate Share Link</button>)}
+
+        <div className={`grid gap-4 md:gap-7 ${gridClassName}`}>
         {wishlists.map((wishlist: any) => (
           <div key={wishlist.id}>
             {selectView && (
@@ -169,29 +192,20 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
               }}
             />
             )}
-            <label className='text-black dark:text-white font-bold'>
-              <Link href={`/wishlists/${wishlist.uuid}`}>
-                {wishlist.title}
-              </Link>
-            </label>
 
-            <p className='text-black dark:text-white font-bold'>Date: {wishlist.occasion_date || 'No date available'}</p>
+          <CardCategory4
+            // bgSVG={item.svgBg}
+            featuredImage={wishlist.products[0]}
+            key={wishlist.uuid}
+            // review how to have different color for each new wishlist
+            color="bg-indigo-50"
+            editDelete={renderEditDelete(wishlist)}
+            {...wishlist}
 
-            <button onClick={() => handleEditClick(wishlist)}
-              type="button"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-            >
-              <span>Edit</span>
-            </button>
-
-            <button
-              type="button" onClick={() => setDeletingWishlist(wishlist)}
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-            >
-              <span>Delete</span>
-            </button>
+          />
           </div>
         ))}
+        </div>
 
       </form>
 
@@ -204,25 +218,25 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
         </ButtonPrimary>
       }
 
-    {isUpdating && !isCreating &&
-      <WishlistForm
-        wishlist={editingWishlist}
-        onSave={updateList}
-        onCancel={handleCancelClick}
-        isUpdate={true}
-      />
-    }
+      {isUpdating && !isCreating &&
+        <WishlistForm
+          wishlist={editingWishlist}
+          onSave={updateList}
+          onCancel={handleCancelClick}
+          isUpdate={true}
+        />
+      }
 
-    {isCreating && !isUpdating &&
-      <WishlistForm
-        wishlist={editingWishlist}
-        onSave={saveList}
-        onCancel={handleCancelClick}
-        isCreate={true}
-      />
-    }
+      {isCreating && !isUpdating &&
+        <WishlistForm
+          wishlist={editingWishlist}
+          onSave={saveList}
+          onCancel={handleCancelClick}
+          isCreate={true}
+        />
+      }
 
-    </div>
+    </>
 
   );
 
