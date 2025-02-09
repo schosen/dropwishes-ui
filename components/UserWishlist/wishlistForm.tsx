@@ -4,6 +4,8 @@ import axiosInstance from "@/utils/axios";
 import { nameRegex } from "@/contains/regexConstants";
 import ButtonSecondary from "../shared/button/ButtonSecondary";
 import ButtonPrimary from "../shared/button/ButtonPrimary";
+import Label from "../shared/Label";
+import Input from "../shared/Input";
 
 interface WishlistFormProps {
   wishlist: Wishlist;
@@ -117,21 +119,25 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 
 	return (
 		<>
-			<fieldset className="">
+			{/* <fieldset className=""> */}
 				<legend className="">
 					Provide a wishlist title and details
 				</legend>
-				<label
+
+			<div className="max-w-lg">
+				<Label
 					htmlFor="title"
-					className=""
+					className="text-sm"
 				>
-					{" "}
+					Title
+				</Label>
+
 					<div className="">
-						<span>Title</span>
 						{getError(validForm.hasValidTitle)}
 					</div>
-					<input
-						className=""
+
+					<Input
+						className="mt-1.5"
 						type="text"
 						value={formData.title}
 						onChange={handleTitleChange}
@@ -141,18 +147,20 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 						// required
 						maxLength={32}
 					/>
-				</label>
-				<label
+
+				<Label
 					htmlFor="description"
-					className=""
+					className="text-sm"
 				>
-					{" "}
+					Description
+				</Label>
+
 					<div className="">
-						<span>Description</span>
 						{/* {getError(validForm.hasValidEmailAddress)} */}
 					</div>
-					<input
-						className=""
+
+					<Input
+						className="mt-1.5"
 						type="text"
 						value={formData.description}
 						onChange={handleDescriptionChange}
@@ -160,18 +168,21 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 						id="description"
 						name="description"
 					/>
-				</label>
 
-				<label
+
+				<Label
 					htmlFor="occasionDate"
-					className=""
+					className="text-sm"
 				>
-					{" "}
+					Occasion Date
+				</Label>
+
 					<div className="">
-						<span>Occasion Date</span>
+						{/* <span>Occasion Date</span> */}
 					</div>
-					<input
-						className=""
+
+					<Input
+						className="mt-1.5"
 						type="date"
 						value={formData.occasion_date}
 						onChange={handleOccasionDateChange}
@@ -180,18 +191,21 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 						name="occasionDate"
 						// maxLength={32}
 					/>
-				</label>
 
-				<label
+
+				<Label
 					htmlFor="address"
-					className=""
+					className="text-sm"
 				>
-					{" "}
+					Address
+				</Label>
+
 					<div className="">
-						<span>Address</span>
+						{/* <span>Address</span> */}
 					</div>
-					<input
-						className=""
+
+					<Input
+						className="mt-1.5"
 						type="text"
 						value={formData.address}
 						onChange={handleAddressChange}
@@ -200,7 +214,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 						name="address"
 						// maxLength={32}
 					/>
-				</label>
+				</div>
 
 				{/* ============= */}
 
@@ -235,7 +249,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 
 
 
-			</fieldset>
+			{/* </fieldset> */}
 		</>
 	);
 }
