@@ -48,23 +48,9 @@ export default async function WishlistsPage() {
       >
         My Wishlists.
       </Heading>
+
       <div className="flex flex-col lg:flex-row">
-
-        {/* <div className="w-full lg:w-[25%]">
-
-        </div> */}
-
-
-         {/* <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-10 2xl:mx-10 "></div> */}
-
-         {/* <div className="flex-auto"> */}
-
-
-          {/* <div className={`nc-SectionGridMoreExplore relative lg:pr-[10%] md:px-16 sm:px-16 px-16`}> */}
-            <UserWishlists wishlistData={wishlists} />
-          {/* </div>
-        </div> */}
-
+        <UserWishlists wishlistData={wishlists} />
       </div>
 
     </div>
