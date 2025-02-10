@@ -38,8 +38,16 @@ export default async function WishlistsPage() {
   return (
     <>
     <main className="container py-16 lg:pb-28 lg:pt-20 ">
-    <div className="relative py-24 lg:py-32">
+    <div className="relative py-24 lg:py-16">
       <BackgroundSection />
+      <Heading
+        className="mb-12 lg:mb-20 text-neutral-900 dark:text-neutral-50"
+        fontClass="text-3xl md:text-4xl 2xl:text-5xl font-semibold md:px-16 sm:px-16 px-16"
+        isCenter
+        desc=""
+      >
+        My Wishlists.
+      </Heading>
       <div className="flex flex-col lg:flex-row">
 
         {/* <div className="w-full lg:w-[25%]">
@@ -49,17 +57,10 @@ export default async function WishlistsPage() {
 
          {/* <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-10 2xl:mx-10 "></div> */}
 
-         {/* <div className="flex-auto">
-          <Heading
-            className="lg:mb-14 text-neutral-900 dark:text-neutral-50"
-            fontClass="text-xl md:text-2xl 2xl:text-3xl font-semibold md:px-16 sm:px-16 px-16"
-            // isCenter
-            desc=""
-          >
-            My Wishlists.
-          </Heading>
+         {/* <div className="flex-auto"> */}
 
-          <div className={`nc-SectionGridMoreExplore relative lg:pr-[10%] md:px-16 sm:px-16 px-16`}> */}
+
+          {/* <div className={`nc-SectionGridMoreExplore relative lg:pr-[10%] md:px-16 sm:px-16 px-16`}> */}
             <UserWishlists wishlistData={wishlists} />
           {/* </div>
         </div> */}

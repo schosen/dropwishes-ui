@@ -119,10 +119,10 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 
 	return (
 		<>
-			{/* <fieldset className=""> */}
-				<legend className="">
+			<fieldset className="">
+				{/* <legend className="">
 					Provide a wishlist title and details
-				</legend>
+				</legend> */}
 
 			<div className="max-w-lg">
 				<Label
@@ -249,7 +249,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
 
 
 
-			{/* </fieldset> */}
+			</fieldset>
 		</>
 	);
 }

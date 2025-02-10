@@ -27,6 +27,7 @@ export default async function WishlistPage({ params }: { params: { uuid: string 
   return(
     <div className="nc-CheckoutPage">
       <main className="container py-16 lg:pb-28 lg:pt-20 ">
+
         <div className="mb-16">
           <h2 className="block text-2xl sm:text-3xl lg:text-4xl font-semibold ">
             {wishlist.title}

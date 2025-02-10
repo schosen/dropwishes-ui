@@ -129,13 +129,13 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
         {deletingWishlist && (
           <div className="z-40 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-md shadow-md">
-              <h3 className="text-lg font-bold mb-4">
+              <h3 className="text-lg font-bold mb-4 dark:text-black">
                 Confirm deletion of "{deletingWishlist.title}" wishlist.
               </h3>
               <div className="flex justify-end gap-2">
                 <button
                   onClick={() => setDeletingWishlist(null)}
-                  className="px-4 py-2 bg-gray-300 rounded"
+                  className="px-4 py-2 bg-gray-300 rounded dark:text-black"
                 >
                   Cancel
                 </button>
@@ -165,7 +165,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
             {isUpdating && !isCreating &&
 
-              <div className="border border-slate-100 dark:border-slate-700 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block shadow-xl">
+              <div className="relative border border-slate-100 dark:border-slate-700 bg-white dark:bg-neutral-900 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block ">
               <WishlistForm
                 wishlist={editingWishlist}
                 onSave={updateList}
@@ -176,7 +176,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
             }
 
             {isCreating && !isUpdating &&
-              <div className="border border-slate-100 dark:border-slate-700 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block shadow-xl">
+              <div className="relative border border-slate-100 dark:border-slate-700 bg-white dark:bg-neutral-900 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block ">
               <WishlistForm
                 wishlist={editingWishlist}
                 onSave={saveList}
@@ -187,10 +187,10 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
             }
           </div>
 
-        <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-200 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-10 2xl:mx-10 "></div>
+        <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-300 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-10 2xl:mx-10 "></div>
 
         <div className="flex-auto">
-
+{/*
           <Heading
             className="lg:mb-14 text-neutral-900 dark:text-neutral-50"
             fontClass="text-xl md:text-2xl 2xl:text-3xl font-semibold "
@@ -198,7 +198,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
             desc=""
           >
             My Wishlists.
-          </Heading>
+          </Heading> */}
 
 
           <div className={`nc-SectionGridMoreExplore relative `}>
