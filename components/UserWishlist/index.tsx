@@ -3,9 +3,11 @@ import { Wishlist } from "@/interfaces/wishlist";
 import CopyLink from "./copyLink";
 import { useState } from 'react';
 import axiosInstance from '../../utils/axios';
+import Heading from "../Heading/Heading";
 import Link from 'next/link'
 import ButtonPrimary from "@/components/shared/button/ButtonPrimary";
 import WishlistForm from "./wishlistForm";
+import CardCategory4 from '@/components/CardCategories/CardCategory4';
 
 
 function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
@@ -17,6 +19,7 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
   const [isCreating, setIsCreating] = useState(false)
   const [isUpdating, setIsUpdating] = useState(false)
   const [deletingWishlist, setDeletingWishlist] = useState<Wishlist | null>(null);
+  let gridClassName = "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
 
   async function shareWishlists(wishlistId: string[]): Promise<string> {
     try {
@@ -85,7 +88,6 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 	}
 
 	async function handleRemoveWishlist(uuid: string) {
-		// creates new array without the item to remove (using index to remove)
 
     try {
       const response = await axiosInstance.delete(`${process.env.NEXT_PUBLIC_API_URL}/api/wishlist/wishlists/${uuid}/`)
@@ -102,127 +104,160 @@ function UserWishlists({ wishlistData }: {wishlistData: Wishlist[]}){
 
 	};
 
-  return(
-      <div className='mt-48'>
+  const renderEditDelete = (wishlist: Wishlist) => {
+    return (
+      <>
+        <button onClick={() => handleEditClick(wishlist)}
+          type="button"
+          className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+        >
+          <span>Edit</span>
+        </button>
 
-      {deletingWishlist && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md shadow-md">
-            <h3 className="text-lg font-bold mb-4">
-              Confirm deletion of "{deletingWishlist.title}" wishlist.
-            </h3>
-            <div className="flex justify-end gap-2">
-              <button
-                onClick={() => setDeletingWishlist(null)}
-                className="px-4 py-2 bg-gray-300 rounded"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleRemoveWishlist(deletingWishlist.uuid)}
-                className="px-4 py-2 bg-red-500 text-white rounded"
-              >
-                Delete
-              </button>
+        <button
+          type="button" onClick={() => setDeletingWishlist(wishlist)}
+          className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
+        >
+          <span>Delete</span>
+        </button>
+      </>
+    )
+  }
+
+  return(
+      <>
+        {deletingWishlist && (
+          <div className="z-40 fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <div className="bg-white p-6 rounded-md shadow-md">
+              <h3 className="text-lg font-bold mb-4 dark:text-black">
+                Confirm deletion of "{deletingWishlist.title}" wishlist.
+              </h3>
+              <div className="flex justify-end gap-2">
+                <button
+                  onClick={() => setDeletingWishlist(null)}
+                  className="px-4 py-2 bg-gray-300 rounded dark:text-black"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={() => handleRemoveWishlist(deletingWishlist.uuid)}
+                  className="px-4 py-2 bg-red-500 text-white rounded"
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {shareLink && (
+        <div className="w-full lg:w-[25%]">
 
-        <div>
-          <h3 className='font-bold text-black dark:text-white'>Your Shareable Link:</h3>
-          <p>{shareLink}</p>
-          <button onClick={removeBlock} className='font-bold text-black dark:text-white'>  Remove Link </button>
-          <CopyLink link={shareLink} />
-
-        </div>
-
-      )}
-
-      <h1 className='font-bold text-black dark:text-white'>Your Wishlists</h1>
+            {!isUpdating && !isCreating &&
+              <ButtonPrimary
+                className="w-full max-w-[240px]"
+                onClick={handleCreateClick}
+              >
+                Create a wishlist
+              </ButtonPrimary>
+            }
 
 
-      {!selectView && (<button onClick={handleClick} className='text-black dark:text-white font-bold'>Share Wishlist</button>)}
+            {isUpdating && !isCreating &&
 
-      {selectView && (<button onClick={handleClick} className='text-black dark:text-white font-bold'> Cancel </button>)}
+              <div className="relative border border-slate-100 dark:border-slate-700 bg-white dark:bg-neutral-900 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block ">
+              <WishlistForm
+                wishlist={editingWishlist}
+                onSave={updateList}
+                onCancel={handleCancelClick}
+                isUpdate={true}
+              />
+              </div>
+            }
 
-
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        handleGenerateLink();
-      }}>
-        {selectView && (<button type="submit">Generate Share Link</button>)}
-        {wishlists.map((wishlist: any) => (
-          <div key={wishlist.id}>
-            {selectView && (
-            <input
-              type="checkbox"
-              value={wishlist.id}
-              onChange={(e) => {
-                if (e.target.checked) {
-                  setSelectedWishlistIds([...selectedWishlistIds, e.target.value]);
-                } else {
-                  setSelectedWishlistIds(selectedWishlistIds.filter(id => id !== e.target.value));
-                }
-              }}
-            />
-            )}
-            <label className='text-black dark:text-white font-bold'>
-              <Link href={`/wishlists/${wishlist.uuid}`}>
-                {wishlist.title}
-              </Link>
-            </label>
-
-            <p className='text-black dark:text-white font-bold'>Date: {wishlist.occasion_date || 'No date available'}</p>
-
-            <button onClick={() => handleEditClick(wishlist)}
-              type="button"
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-            >
-              <span>Edit</span>
-            </button>
-
-            <button
-              type="button" onClick={() => setDeletingWishlist(wishlist)}
-              className="relative z-10 flex items-center mt-3 font-medium text-primary-6000 hover:text-primary-500 text-sm "
-            >
-              <span>Delete</span>
-            </button>
+            {isCreating && !isUpdating &&
+              <div className="relative border border-slate-100 dark:border-slate-700 bg-white dark:bg-neutral-900 rounded-xl px-6 py-7 space-y-4 sm:space-y-6 block ">
+              <WishlistForm
+                wishlist={editingWishlist}
+                onSave={saveList}
+                onCancel={handleCancelClick}
+                isCreate={true}
+              />
+              </div>
+            }
           </div>
-        ))}
 
-      </form>
+        <div className="flex-shrink-0 border-t lg:border-t-0 lg:border-l border-slate-300 dark:border-slate-700 my-10 lg:my-0 lg:mx-10 xl:lg:mx-10 2xl:mx-10 "></div>
 
-      {!isUpdating && !isCreating &&
-        <ButtonPrimary
-          className="w-full max-w-[240px]"
-          onClick={handleCreateClick}
-        >
-          Create a wishlist
-        </ButtonPrimary>
-      }
+        <div className="flex-auto">
+{/*
+          <Heading
+            className="lg:mb-14 text-neutral-900 dark:text-neutral-50"
+            fontClass="text-xl md:text-2xl 2xl:text-3xl font-semibold "
+            // isCenter
+            desc=""
+          >
+            My Wishlists.
+          </Heading> */}
 
-    {isUpdating && !isCreating &&
-      <WishlistForm
-        wishlist={editingWishlist}
-        onSave={updateList}
-        onCancel={handleCancelClick}
-        isUpdate={true}
-      />
-    }
 
-    {isCreating && !isUpdating &&
-      <WishlistForm
-        wishlist={editingWishlist}
-        onSave={saveList}
-        onCancel={handleCancelClick}
-        isCreate={true}
-      />
-    }
+          <div className={`nc-SectionGridMoreExplore relative `}>
+          {shareLink && (
+          <div>
+            <h3 className='font-bold text-black dark:text-white'>Your Shareable Link:</h3>
+            <p>{shareLink}</p>
+            <button onClick={removeBlock} className='font-bold text-black dark:text-white'>  Remove Link </button>
+            <CopyLink link={shareLink} />
+          </div>
+          )}
 
-    </div>
+          {!selectView && (<button onClick={handleClick} className='text-black dark:text-white font-bold'>Share Wishlist</button>)}
+
+          {selectView && (<button onClick={handleClick} className='text-black dark:text-white font-bold'> Cancel </button>)}
+
+
+          <form onSubmit={(e) => {
+          e.preventDefault();
+          handleGenerateLink();
+          }}>
+          {selectView && (<button type="submit">Generate Share Link</button>)}
+
+          <div className={`grid gap-4 md:gap-7 ${gridClassName}`}>
+            {wishlists.map((wishlist: any) => (
+              <div key={wishlist.id}>
+                {selectView && (
+                  <input
+                    type="checkbox"
+                    value={wishlist.id}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setSelectedWishlistIds([...selectedWishlistIds, e.target.value]);
+                      } else {
+                        setSelectedWishlistIds(selectedWishlistIds.filter(id => id !== e.target.value));
+                      }
+                    }}
+                  />
+                )}
+
+                <CardCategory4
+                  // bgSVG={item.svgBg}
+                  featuredImage={wishlist.products[0]}
+                  key={wishlist.uuid}
+                  // review how to have different color for each new wishlist
+                  color="bg-indigo-50"
+                  editDelete={renderEditDelete(wishlist)}
+                  {...wishlist}
+                />
+              </div>
+            ))}
+          </div>
+          </form>
+        </div>
+      </div>
+
+
+
+    </>
 
   );
 
