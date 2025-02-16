@@ -4,22 +4,22 @@ import Label from "@/components/shared/Label";
 import Input from "@/components/shared/Input";
 import Textarea from "@/components/shared/Textarea";
 import ButtonPrimary from "@/components/shared/button/ButtonPrimary";
-import BackgroundSection from "@/components/BackgroundSection/BackgroundSection";
+import BackgroundSection from "@/components/shared/BackgroundSection";
 // import SectionPromo1 from "@/components/SectionPromo1";
 
 const info = [
   {
-    title: "🗺 ADDRESS",
-    desc: "Photo booth tattooed prism, portland taiyaki hoodie neutra typewriter",
+    title: "🗺 CONTACT US",
+    desc: "For all enquiries please use the details below or contact us using our contact form",
   },
   {
     title: "💌 EMAIL",
-    desc: "nc.example@example.com",
+    desc: "info@dropwishes.com",
   },
-  {
-    title: "☎ PHONE",
-    desc: "000-123-456-7890",
-  },
+  // {
+  //   title: "☎ PHONE",
+  //   desc: "000-123-456-7890",
+  // },
 ];
 
 const PageContact = ({}) => {
@@ -83,13 +83,6 @@ const PageContact = ({}) => {
         </div>
       </div>
 
-      {/* OTHER SECTIONS */}
-      <div className="container">
-        <div className="relative my-24 lg:my-32 py-24 lg:py-32">
-          <BackgroundSection />
-          {/* <SectionPromo1 /> */}
-        </div>
-      </div>
     </div>
   );
 };
