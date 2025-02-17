@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "../styles/globals.css";
 import "@/styles/scss/index.scss";
 import IndexStyles from "../styles/Index.module.css";
-// import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header";
 
 const poppins = Poppins({
@@ -28,7 +28,7 @@ export default function RootLayout({
           <div>
           <Header />
           {children}
-          {/* <Footer /> */}
+          <Footer />
           </div>
         </Providers>
       </body>
