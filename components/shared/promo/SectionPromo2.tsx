@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import NcImage from "../NcImage";
 import rightImgDemo from "@/public/images/promo2.png";
 import ButtonPrimary from "../button/ButtonPrimary";
-import Logo from "../Logo";
+import Logo from "@/components/shared/Logo";
 import backgroundLineSvg from "@/public/images/Moon.svg";
 import Image from "next/image";
 

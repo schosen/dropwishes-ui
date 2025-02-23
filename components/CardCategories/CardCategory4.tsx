@@ -63,7 +63,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
           </div>
 
           <Link
-            href={"/collection"}
+            href={`/wishlists/${uuid}`}
             className="flex items-center text-sm font-medium group-hover:text-primary-500 transition-colors"
           >
             <span>View All</span>

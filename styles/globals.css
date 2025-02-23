@@ -102,8 +102,12 @@ li{
         width:36%;
         min-width:345px;
         border-radius:0.8rem;
-        margin-top:6.25rem;
+        margin-top:5.25rem;
         padding:2rem 2rem 4rem 2rem;
+        margin-bottom: 6rem;
+        margin-left: auto;
+        margin-right: auto;
+
 
     }
     aside{
@@ -120,6 +124,7 @@ li{
         top:0;
         left:0;
         z-index:-1;
+        margin-top: 5rem;
     }
 }
 
@@ -143,9 +148,10 @@ li{
         /* min-width:345px; */
         min-height:var(--form-min-height);
         border-radius:0.8rem;
-        margin-top:11.25rem;
+        margin-top:6.25rem;
         padding:2rem 2rem 4rem 2rem;
-        margin-left: 8%;
+        margin-left: 7.5rem;
+        margin-bottom: 6rem;
 
     }
     aside{
