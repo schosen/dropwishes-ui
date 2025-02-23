@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import ThemeToggler from "./ThemeToggler";
 import menuData from "./menuData";
 import { useAuth } from "@/context/AuthContext";
-
+//  TODO: DELETE THIS FILE
 const Header = () => {
 
   // authentication state / handle logout
@@ -191,7 +191,7 @@ const Header = () => {
                 )}
 
                 <div>
-                  {/* <ThemeToggler /> */}
+                  <ThemeToggler />
                 </div>
               </div>
             </div>
