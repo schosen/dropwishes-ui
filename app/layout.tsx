@@ -6,6 +6,7 @@ import "@/styles/scss/index.scss";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 // import Header from "@/components/Header/HeaderOld";
+import { getAccount } from "@/services/wishlistService";
 
 const poppins = Poppins({
   subsets: ["latin"],

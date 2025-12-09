@@ -1,7 +1,7 @@
-// import axios from 'axios';
+"use server"
 import axiosInstance from '../utils/axios';  // Use the configured axios instance
 import { cookies } from 'next/headers'; // To get cookies in server components
-import { Wishlist } from '@/interfaces/wishlist'
+import { Wishlist, Account } from '@/interfaces/wishlist'
 
 
 // interface Wishlist {
@@ -40,7 +40,6 @@ export async function getWishlists(): Promise<Wishlist[] | null> {
   }
 }
 
-
 // GET a specific wishlist
 export async function getWishlist(id: string): Promise<Wishlist[] | null> {
   const token = getAuthToken();
@@ -63,67 +62,67 @@ export async function getWishlist(id: string): Promise<Wishlist[] | null> {
 }
 
 // POST a new wishlist
-export async function postWishlist(newWishlistData: Wishlist[]): Promise<void> {
-  const token = getAuthToken();
+// export async function postWishlist(newWishlistData: Wishlist[]): Promise<void> {
+//   const token = getAuthToken();
 
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
+//   if (!token) {
+//     throw new Error('No authentication token found');
+//   }
 
-  try {
-    const response = await axiosInstance.post('/api/wishlists/wishlist/', newWishlistData, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error creating wishlist:', error);
-    throw error;
-  }
-}
+//   try {
+//     const response = await axiosInstance.post('/api/wishlists/wishlist/', newWishlistData, {
+//       headers: {
+//         Authorization: `Token ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error creating wishlist:', error);
+//     throw error;
+//   }
+// }
 
 // PUT (update) an existing wishlist
-export async function updateWishlist(id: number, updatedWishlistData: Wishlist[]) {
-  const token = getAuthToken();
+// export async function updateWishlist(id: number, updatedWishlistData: Wishlist[]) {
+//   const token = getAuthToken();
 
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
+//   if (!token) {
+//     throw new Error('No authentication token found');
+//   }
 
-  try {
-    const response = await axiosInstance.put(`https://your-backend-api.com/api/wishlists/${id}/`, updatedWishlistData, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error updating wishlist:', error);
-    throw error;
-  }
-}
+//   try {
+//     const response = await axiosInstance.put(`https://your-backend-api.com/api/wishlists/${id}/`, updatedWishlistData, {
+//       headers: {
+//         Authorization: `Token ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error updating wishlist:', error);
+//     throw error;
+//   }
+// }
 
-// PATCH (partial update) an existing wishlist
-export async function patchWishlist(id: string, partialWishlistData: Wishlist[]) {
-  const token = getAuthToken();
+// // PATCH (partial update) an existing wishlist
+// export async function patchWishlist(id: string, partialWishlistData: Wishlist[]) {
+//   const token = getAuthToken();
 
-  if (!token) {
-    throw new Error('No authentication token found');
-  }
+//   if (!token) {
+//     throw new Error('No authentication token found');
+//   }
 
-  try {
-    const response = await axiosInstance.patch(`https://your-backend-api.com/api/wishlists/${id}/`, partialWishlistData, {
-      headers: {
-        Authorization: `Token ${token}`,
-      },
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error partially updating wishlist:', error);
-    throw error;
-  }
-}
+//   try {
+//     const response = await axiosInstance.patch(`https://your-backend-api.com/api/wishlists/${id}/`, partialWishlistData, {
+//       headers: {
+//         Authorization: `Token ${token}`,
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.error('Error partially updating wishlist:', error);
+//     throw error;
+//   }
+// }
 
 // POST: Share a wishlist/s
 // export async function shareWishlists(wishlistId: string[]): Promise<string> {
@@ -156,4 +155,37 @@ export async function viewWishlists(uuid: string, wishlidIds: string): Promise<s
     console.error('Error getting wishlist data:', error);
     throw error;
    }
+}
+
+// GET account details
+export async function getAccount(): Promise<Account | null> {
+  "use server"
+  const token = getAuthToken();
+
+  if (!token) {
+    console.warn("No authentication token found");
+    return null;
+  }
+
+  try {
+    const response = await axiosInstance.get<Account>(`/api/user/me/`, {
+      headers: {
+        Authorization: `Token ${token}`,
+      },
+    });
+    // Ensure response is as expected
+    if (!response || !response.data) {
+      console.error("Invalid account response");
+      return null;
+    }
+    return response.data;
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+      console.warn("Token expired. Redirecting to login...");
+      // Redirect to login or refresh token
+      } else {
+      console.error('Error fetching account details:', error);
+      }
+    return null;
+  }
 }

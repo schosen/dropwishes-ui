@@ -26,7 +26,7 @@ const WishlistForm: React.FC<WishlistFormProps> = ({
   const [validForm, setValidForm] = useState({ hasValidTitle: true });
 	const [formData, setFormData] = useState(wishlist);
 
-		function handleTitleChange(e: ChangeEvent<HTMLInputElement>) {
+	function handleTitleChange(e: ChangeEvent<HTMLInputElement>) {
 		setFormData({
 			...formData,
 			title: e.target.value,

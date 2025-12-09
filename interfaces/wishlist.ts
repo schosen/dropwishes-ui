@@ -10,6 +10,15 @@ interface Wishlist {
   products: any[]; // should be Product[];
 }
 
+// ACCOUNT INTERFACE
+interface Account {
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string | null;
+  birthday: string;
+}
+
 // FORM DATA INTERFACE
 interface FormData {
   wishlist: Wishlist;
@@ -69,5 +78,6 @@ export type {
   Product,
   AffiliateProduct,
   UserWishlists,
+  Account
 //   WishlistIds
 }

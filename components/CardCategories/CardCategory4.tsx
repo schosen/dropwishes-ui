@@ -59,7 +59,7 @@ const CardCategory4: FC<CardCategory4Props> = ({
             >
               {desc}
             </span>
-            <h2 className={`text-2xl sm:text-3xl font-semibold`}>{title}</h2>
+            <p className={`text-lg sm:text-lg font-semibold`}>{title}</p>
           </div>
 
           <Link
